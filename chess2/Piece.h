@@ -1,25 +1,37 @@
 #ifndef PIECE_H_INCLUDED
 #define PIECE_H_INCLUDED
 
-#include<iostream>
-#include<vector>
+#include <iostream>
+#include <vector>
+#include <algorithm>
 
 class Board;
 
 class Piece 
 {
 	public:
-								Piece							();
-								Piece							(int l, int c, Board *b, char co, double v);
-		virtual					~Piece							() = 0;
-		virtual char			get_name						() = 0;
-		char					get_color						();
-		int						get_coordinates					();
-		virtual void			compute_authorized_moves		() = 0;
-		void					print_authorized_moves			();
-		void					set_coordinates					(int l, int c);
-		bool					is_authorized_move				(int m);
-		void					set_pined						(bool p) { is_pined = p; }
+								Piece									();
+								Piece									(int l, int c, Board *b, char co, double v);
+		virtual					~Piece									() = 0;
+		virtual char			get_name								() = 0;
+		char					get_color								();
+		int						get_coordinates							();
+		virtual void			compute_authorized_moves				() = 0;
+		void					print_authorized_moves					();
+		void					set_coordinates							(int l, int c);
+		bool					is_authorized_move						(int m);
+		void					set_pined								(bool p) { is_pined = p; }
+		void					add_top_left_diagonal_moves				(int distance);
+		void					add_top_right_diagonal_moves			(int distance);
+		void					add_bottom_left_diagonal_moves			(int distance);
+		void					add_bottom_right_diagonal_moves			(int distance);
+		void					add_top_line_moves						(int distance);
+		void					add_right_line_moves					(int distance);
+		void					add_left_line_moves						(int distance);
+		void					add_bottom_line_moves					(int distance);
+		void					add_knight_moves						();
+		void					add_white_pawn_moves					();
+		void					add_black_pawn_moves					();
 
 	protected:
 		int						line;

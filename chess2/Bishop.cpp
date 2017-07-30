@@ -16,72 +16,12 @@ char Bishop::get_name() {
 		return 'b';
 }
 
-void Bishop::compute_authorized_moves() {
+void Bishop::compute_authorized_moves()
+{
 	authorized_moves.clear();
 
-	//Move top Right
-	for (int i = 1; (line + i < 8) && (column + i <8); i++) {
-		if (!(board->get_case(line + i, column + i))->is_occupied()) {
-			authorized_moves.push_back((line + i) * 8 + column + i);
-			board->get_case((line + i), (column + i))->add_threat(this);
-		}
-
-		else {
-			if (((board->get_case(line + i, column + i)->get_occupant())->get_color() != color)) {
-				authorized_moves.push_back((line + i) * 8 + column + i);
-				board->get_case((line + i), (column + i))->add_threat(this);
-			}
-			break;
-		}
-	}
-
-	//Move top left
-	for (int i = 1; (line + i < 8) && (column - i >= 0); i++) {
-		if (!(board->get_case(line + i, column - i))->is_occupied()) {
-			authorized_moves.push_back((line + i) * 8 + (column - i));
-			board->get_case((line + i), (column - i))->add_threat(this);
-		}
-
-		else {
-			if (((board->get_case(line + i, column - i)->get_occupant())->get_color() != color)) {
-				authorized_moves.push_back((line + i) * 8 + (column - i));
-				board->get_case((line + i), (column - i))->add_threat(this);
-			}
-			break;
-		}
-	}
-
-	//Move back right
-	for (int i = 1; (line - i >= 0) && (column + i < 8); i++) {
-		if (!(board->get_case(line - i, column + i))->is_occupied()) {
-			authorized_moves.push_back((line - i) * 8 + (column + i));
-			board->get_case((line - i), (column + i))->add_threat(this);
-		}
-
-		else {
-			if (((board->get_case(line - i, column + i)->get_occupant())->get_color() != color)) {
-				authorized_moves.push_back((line - i) * 8 + (column + i));
-				board->get_case((line - i), (column + i))->add_threat(this);
-			}
-			break;
-		}
-	}
-
-	//Move back left
-	for (int i = 1; (line - i >= 0) && (column - i >= 0); i++) {
-		if (!(board->get_case(line - i, column - i))->is_occupied()) {
-			authorized_moves.push_back((line - i) * 8 + (column - i));
-			board->get_case((line - i), (column - i))->add_threat(this);
-		}
-
-		else {
-			if (((board->get_case(line - i, column - i)->get_occupant())->get_color() != color)) {
-				authorized_moves.push_back((line - i) * 8 + (column - i));
-				board->get_case((line - i), (column - i))->add_threat(this);
-			}
-			break;
-		}
-	}
-
-
+	add_top_left_diagonal_moves(8);
+	add_top_right_diagonal_moves(8);
+	add_bottom_right_diagonal_moves(8);
+	add_bottom_left_diagonal_moves(8);
 }
