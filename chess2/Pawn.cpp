@@ -11,35 +11,35 @@ Pawn::Pawn(int l, int c, Board *b, char co, double v) : Piece(l, c, b, co, v) {
 
 }
 
-char Pawn::getName() {
+char Pawn::get_name() {
 	if (color == 'b')
 		return 'P';
 	else
 		return 'p';
 }
 
-void Pawn::calculateAuthorizedMoves() {
+void Pawn::compute_authorized_moves() {
 
-	authorizedMoves.clear();
+	authorized_moves.clear();
 
 	//White Pawn :
 	if (color == 'w') {
 		//Move forward
-		if (x + 1 < 8 && !(board->getCase(x + 1, y))->isOccupied()) {
-			authorizedMoves.push_back((x + 1) * 8 + y);
-			if (x == 1 && !(board->getCase(x + 2, y))->isOccupied())
-				authorizedMoves.push_back((x + 2) * 8 + y);
+		if (line + 1 < 8 && !(board->get_case(line + 1, column))->is_occupied()) {
+			authorized_moves.push_back((line + 1) * 8 + column);
+			if (line == 1 && !(board->get_case(line + 2, column))->is_occupied())
+				authorized_moves.push_back((line + 2) * 8 + column);
 		}
 
 		//Take
-		if ((x + 1 < 8 && y - 1 >= 0) && board->getCase(x + 1, y - 1)->isOccupied() && ((board->getCase(x + 1, y - 1))->getOccupant())->getColor() != 'w') {
-			authorizedMoves.push_back((x + 1) * 8 + (y - 1));
-			board->getCase((x + 1), (y - 1))->addThreat(this);
+		if ((line + 1 < 8 && column - 1 >= 0) && board->get_case(line + 1, column - 1)->is_occupied() && ((board->get_case(line + 1, column - 1))->get_occupant())->get_color() != 'w') {
+			authorized_moves.push_back((line + 1) * 8 + (column - 1));
+			board->get_case((line + 1), (column - 1))->add_threat(this);
 		}
 
-		if ((x + 1 < 8 && y + 1 <8) && board->getCase(x + 1, y + 1)->isOccupied() && ((board->getCase(x + 1, y + 1))->getOccupant())->getColor() != 'w') {
-			authorizedMoves.push_back((x + 1) * 8 + (y + 1));
-			board->getCase((x + 1), (y + 1))->addThreat(this);
+		if ((line + 1 < 8 && column + 1 <8) && board->get_case(line + 1, column + 1)->is_occupied() && ((board->get_case(line + 1, column + 1))->get_occupant())->get_color() != 'w') {
+			authorized_moves.push_back((line + 1) * 8 + (column + 1));
+			board->get_case((line + 1), (column + 1))->add_threat(this);
 		}
 
 		//TODO : En passant
@@ -50,21 +50,21 @@ void Pawn::calculateAuthorizedMoves() {
 	//Black Pawn :
 	if (color == 'b') {
 		//Move forward
-		if (x - 1 >= 0 && !(board->getCase(x - 1, y))->isOccupied()) {
-			authorizedMoves.push_back((x - 1) * 8 + y);
-			if (x == 6 && !(board->getCase(x - 2, y))->isOccupied())
-				authorizedMoves.push_back((x - 2) * 8 + y);
+		if (line - 1 >= 0 && !(board->get_case(line - 1, column))->is_occupied()) {
+			authorized_moves.push_back((line - 1) * 8 + column);
+			if (line == 6 && !(board->get_case(line - 2, column))->is_occupied())
+				authorized_moves.push_back((line - 2) * 8 + column);
 		}
 
 		//Take
-		if ((x - 1 >= 0 && y - 1 >= 0) && board->getCase(x - 1, y - 1)->isOccupied() && ((board->getCase(x - 1, y - 1))->getOccupant())->getColor() != 'b') {
-			authorizedMoves.push_back((x - 1) * 8 + (y - 1));
-			board->getCase((x - 1), (y - 1))->addThreat(this);
+		if ((line - 1 >= 0 && column - 1 >= 0) && board->get_case(line - 1, column - 1)->is_occupied() && ((board->get_case(line - 1, column - 1))->get_occupant())->get_color() != 'b') {
+			authorized_moves.push_back((line - 1) * 8 + (column - 1));
+			board->get_case((line - 1), (column - 1))->add_threat(this);
 		}
 
-		if ((x - 1 >= 0 && y + 1 < 8) && board->getCase(x - 1, y + 1)->isOccupied() && ((board->getCase(x - 1, y + 1))->getOccupant())->getColor() != 'b') {
-			authorizedMoves.push_back((x - 1) * 8 + (y + 1));
-			board->getCase((x - 1), (y + 1))->addThreat(this);
+		if ((line - 1 >= 0 && column + 1 < 8) && board->get_case(line - 1, column + 1)->is_occupied() && ((board->get_case(line - 1, column + 1))->get_occupant())->get_color() != 'b') {
+			authorized_moves.push_back((line - 1) * 8 + (column + 1));
+			board->get_case((line - 1), (column + 1))->add_threat(this);
 		}
 
 		//TODO : En passant

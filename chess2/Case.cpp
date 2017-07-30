@@ -2,16 +2,16 @@
 
 using namespace std;
 
-Case::Case() : threatenedBy() {
-	x = 0;
-	y = 0;
+Case::Case() : threatened_by() {
+	line = 0;
+	column = 0;
 	board = 0;
 	occupant = 0;
 }
 
-Case::Case(int l, int c, Board* b, Piece *o) : threatenedBy() {
-	x = l;
-	y = c;
+Case::Case(int l, int c, Board* b, Piece *o) : threatened_by() {
+	line = l;
+	column = c;
 	occupant = o;
 	board = b;
 }
@@ -20,59 +20,59 @@ void Case::print() {
 	if (occupant == 0)
 		cout << ".";
 	else
-		cout << occupant->getName();
+		cout << occupant->get_name();
 }
 
-bool Case::isOccupied() {
+bool Case::is_occupied() {
 	if (occupant == 0)
 		return false;
 	return true;
 }
 
-void Case::setOccupant(Piece *p) {
+void Case::set_occupant(Piece *p) {
 	occupant = p;
 }
 
-Piece* Case::getOccupant() {
+Piece* Case::get_occupant() {
 	return occupant;
 }
 
-void Case::addThreat(Piece* p) {
-	threatenedBy.push_back(p);
+void Case::add_threat(Piece* p) {
+	threatened_by.push_back(p);
 }
 
-void Case::removeThreat(Piece* p) {
-	threatenedBy.remove(p);
+void Case::remove_threat(Piece* p) {
+	threatened_by.remove(p);
 }
 
-void Case::clearThreats() {
-	threatenedBy.clear();
+void Case::clear_threats() {
+	threatened_by.clear();
 }
 
-void Case::printThreats() {
+void Case::print_threats() {
 	list<Piece*>::iterator it;
 
-	for (it = threatenedBy.begin(); it != threatenedBy.end(); it++) {
-		cout << (*it)->getName() << ", ";
+	for (it = threatened_by.begin(); it != threatened_by.end(); it++) {
+		cout << (*it)->get_name() << ", ";
 	}
 }
 
 
-bool Case::isThreatenedByWhite() {
+bool Case::is_threatened_by_white() {
 	list<Piece*>::iterator it;
 
-	for (it = threatenedBy.begin(); it != threatenedBy.end(); it++)
-		if ((*it)->getColor() == 'w')
+	for (it = threatened_by.begin(); it != threatened_by.end(); it++)
+		if ((*it)->get_color() == 'w')
 			return true;
 
 	return false;
 }
 
-bool Case::isThreatenedByBlack() {
+bool Case::is_threatened_by_black() {
 	list<Piece*>::iterator it;
 
-	for (it = threatenedBy.begin(); it != threatenedBy.end(); it++)
-		if ((*it)->getColor() == 'b')
+	for (it = threatened_by.begin(); it != threatened_by.end(); it++)
+		if ((*it)->get_color() == 'b')
 			return true;
 
 	return false;

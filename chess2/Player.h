@@ -4,36 +4,39 @@
 #include <iostream>
 #include <list>
 #include <string>
+
 #include "Functions.h"
 #include "Piece.h"
 
 class Board;
 
-class Player {
-public:
-	static const int MOVE = 0;
-	static const int OFFER_DRAW = 1;
-	static const int ABANDON = 2;
-	Player();
-	Player(Board *b, char c);
-	void addPiece(Piece *p);
-	void removePiece(Piece *p);
-	void printListPieces();
-	void calculateAllAuthorizedMoves();
-	void printAllAuthorizedMoves();
-	int play();
-	char getColor();
-	bool checkKCastling();
-	bool checkQCastling();
-	bool isCheck();
-	void KCastling();
-	void QCastling();
-	std::list<Piece*>& getListPieces();
+class Player 
+{
+	public:
+		static const int	MOVE = 0;
+		static const int	OFFER_DRAW = 1;
+		static const int	ABANDON = 2;
 
-private:
-	std::list<Piece*> pieces;
-	Board *board;
-	char color;
+							Player								();
+							Player								(Board *b, char c);
+	void					add_piece							(Piece *p);
+	void					remove_piece						(Piece *p);
+	void					print_list_pieces					();
+	void					calculate_all_authorized_moves		();
+	void					print_all_authorized_moves			();
+	int						play								();
+	char					get_color							();
+	bool					check_k_castling					();
+	bool					check_q_castling					();
+	bool					is_check							();
+	void					k_castling							();
+	void					q_castling							();
+	std::list<Piece*>&		get_list_pieces						();
+
+	private:
+		std::list<Piece*>	pieces;
+		Board*				board;
+		char				color;
 };
 
 #endif

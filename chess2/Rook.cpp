@@ -11,83 +11,83 @@ Rook::Rook(int l, int c, Board *b, char co, double v) : Piece(l, c, b, co, v) {
 
 }
 
-char Rook::getName() {
+char Rook::get_name() {
 	if (color == 'b')
 		return 'R';
 	else
 		return 'r';
 }
 
-bool Rook::hasMoved() {
+bool Rook::has_moved() {
 	return moved;
 }
 
-void Rook::setMoved(bool m) {
+void Rook::set_moved(bool m) {
 	moved = m;
 }
 
-void Rook::calculateAuthorizedMoves() {
-	authorizedMoves.clear();
+void Rook::compute_authorized_moves() {
+	authorized_moves.clear();
 
 	//Move Toward
-	for (int i = 1; x + i < 8; i++) {
-		if (!(board->getCase(x + i, y))->isOccupied()) {
-			authorizedMoves.push_back((x + i) * 8 + y);
-			board->getCase((x + i), y)->addThreat(this);
+	for (int i = 1; line + i < 8; i++) {
+		if (!(board->get_case(line + i, column))->is_occupied()) {
+			authorized_moves.push_back((line + i) * 8 + column);
+			board->get_case((line + i), column)->add_threat(this);
 		}
 
 		else {
-			if (((board->getCase(x + i, y)->getOccupant())->getColor() != color)) {
-				authorizedMoves.push_back((x + i) * 8 + y);
-				board->getCase((x + i), y)->addThreat(this);
+			if (((board->get_case(line + i, column)->get_occupant())->get_color() != color)) {
+				authorized_moves.push_back((line + i) * 8 + column);
+				board->get_case((line + i), column)->add_threat(this);
 			}
 			break;
 		}
 	}
 
 	//Move right
-	for (int i = 1; y + i < 8; i++) {
-		if (!(board->getCase(x, y + i))->isOccupied()) {
-			authorizedMoves.push_back(x * 8 + y + i);
-			board->getCase(x, (y + i))->addThreat(this);
+	for (int i = 1; column + i < 8; i++) {
+		if (!(board->get_case(line, column + i))->is_occupied()) {
+			authorized_moves.push_back(line * 8 + column + i);
+			board->get_case(line, (column + i))->add_threat(this);
 		}
 
 		else {
-			if (((board->getCase(x, y + i)->getOccupant())->getColor() != color)) {
-				authorizedMoves.push_back(x * 8 + y + i);
-				board->getCase(x, (y + i))->addThreat(this);
+			if (((board->get_case(line, column + i)->get_occupant())->get_color() != color)) {
+				authorized_moves.push_back(line * 8 + column + i);
+				board->get_case(line, (column + i))->add_threat(this);
 			}
 			break;
 		}
 	}
 
 	//Move back
-	for (int i = 1; x - i >= 0; i++) {
-		if (!(board->getCase(x - i, y))->isOccupied()) {
-			authorizedMoves.push_back((x - i) * 8 + y);
-			board->getCase((x - i), y)->addThreat(this);
+	for (int i = 1; line - i >= 0; i++) {
+		if (!(board->get_case(line - i, column))->is_occupied()) {
+			authorized_moves.push_back((line - i) * 8 + column);
+			board->get_case((line - i), column)->add_threat(this);
 		}
 
 		else {
-			if (((board->getCase(x - i, y)->getOccupant())->getColor() != color)) {
-				authorizedMoves.push_back((x - i) * 8 + y);
-				board->getCase((x - i), y)->addThreat(this);
+			if (((board->get_case(line - i, column)->get_occupant())->get_color() != color)) {
+				authorized_moves.push_back((line - i) * 8 + column);
+				board->get_case((line - i), column)->add_threat(this);
 			}
 			break;
 		}
 	}
 
 	//Move left
-	for (int i = 1; y - i >= 0; i++) {
-		if (!(board->getCase(x, y - i))->isOccupied()) {
-			authorizedMoves.push_back(x * 8 + y - i);
-			board->getCase(x, (y - i))->addThreat(this);
+	for (int i = 1; column - i >= 0; i++) {
+		if (!(board->get_case(line, column - i))->is_occupied()) {
+			authorized_moves.push_back(line * 8 + column - i);
+			board->get_case(line, (column - i))->add_threat(this);
 		}
 
 		else {
-			if (((board->getCase(x, y - i)->getOccupant())->getColor() != color)) {
-				authorizedMoves.push_back(x * 8 + y - i);
-				board->getCase(x, (y - i))->addThreat(this);
+			if (((board->get_case(line, column - i)->get_occupant())->get_color() != color)) {
+				authorized_moves.push_back(line * 8 + column - i);
+				board->get_case(line, (column - i))->add_threat(this);
 			}
 			break;
 		}

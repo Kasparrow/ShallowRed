@@ -6,104 +6,110 @@
 
 class Board;
 
-class Piece {
-public:
-	Piece();
-	Piece(int l, int c, Board *b, char co, double v);
-	virtual ~Piece() = 0;
-	virtual char getName() = 0;
-	char getColor();
-	int getCoordinate();
-	virtual void calculateAuthorizedMoves() = 0;
-	void printAuthorizedMoves();
-	void setCoordinate(int l, int c);
-	bool isAuthorizedMove(int m);
-	void setPined(bool p) {
-		isPined = p;
-	}
-protected:
-	int x;
-	int y;
-	bool isPined;
-	char color;
-	double value;
-	Board *board;
-	std::vector<int> authorizedMoves;
+class Piece 
+{
+	public:
+								Piece							();
+								Piece							(int l, int c, Board *b, char co, double v);
+		virtual					~Piece							() = 0;
+		virtual char			get_name						() = 0;
+		char					get_color						();
+		int						get_coordinates					();
+		virtual void			compute_authorized_moves		() = 0;
+		void					print_authorized_moves			();
+		void					set_coordinates					(int l, int c);
+		bool					is_authorized_move				(int m);
+		void					set_pined						(bool p) { is_pined = p; }
+
+	protected:
+		int						line;
+		int						column;
+		bool					is_pined;
+		char					color;
+		double					value;
+		Board*					board;
+		std::vector<int>		authorized_moves;
 };
 
-class King : public Piece {
-public:
-	King();
-	King(int l, int c, Board *b, char co, double v);
-	~King() {};
-	bool hasMoved();
-	bool isCheck();
-	void KCastling();
-	void QCastling();
-	char getName();
-	void setMoved(bool m);
-	void calculateAuthorizedMoves();
+class King : public Piece 
+{
+	public:
+								King							();
+								King							(int l, int c, Board *b, char co, double v);
+								~King							() {};
+		bool					has_moved						();
+		bool					is_check						();
+		void					k_castling						();
+		void					q_castling						();
+		char					get_name						();
+		void					set_moved						(bool m);
+		void					compute_authorized_moves		();
 
-private:
-	bool moved;
+	private:
+		bool					moved;
 };
 
-class Queen : public Piece {
-public:
-	Queen();
-	Queen(int l, int c, Board *b, char co, double v);
-	~Queen() {};
-	char getName();
-	void calculateAuthorizedMoves();
+class Queen : public Piece 
+{
+	public:
+								Queen							();
+								Queen							(int l, int c, Board *b, char co, double v);
+								~Queen							() {};
+		char					get_name						();
+		void					compute_authorized_moves		();
 
-private:
+	private:
 };
 
-class Rook : public Piece {
-public:
-	Rook();
-	Rook(int l, int c, Board *b, char co, double v);
-	~Rook() {};
-	bool hasMoved();
-	char getName();
-	void setMoved(bool m);
-	void calculateAuthorizedMoves();
+class Rook : public Piece 
+{
+	public:
+								Rook							();
+								Rook							(int l, int c, Board *b, char co, double v);
+								~Rook							() {};
+		bool					has_moved						();
+		char					get_name						();
+		void					set_moved						(bool m);
+		void					compute_authorized_moves		();
 
-private:
-	bool moved; /*! Boolean set to true if the Rook has moved during the game */
+	private:
+		bool					moved;
 };
 
-class Knight : public Piece {
-public:
-	Knight();
-	Knight(int l, int c, Board *b, char co, double v);
-	~Knight() {};
-	char getName();
-	void calculateAuthorizedMoves();
+class Knight : public Piece 
+{
+	public:
+								Knight							();
+								Knight							(int l, int c, Board *b, char co, double v);
+								~Knight							() {};
+		char					get_name						();
+		void					compute_authorized_moves		();
 
-private:
+	private:
 };
 
-class Bishop : public Piece {
-public:
-	Bishop();
-	Bishop(int l, int c, Board *b, char co, double v);
-	~Bishop() {};
-	char getName();
-	void calculateAuthorizedMoves();
+class Bishop : public Piece 
+{
+	public:
+								Bishop							();
+								Bishop							(int l, int c, Board *b, char co, double v);
+								~Bishop							() {};
+		char					get_name						();
+		void					compute_authorized_moves		();
 
-private:
+	private:
 };
 
-class Pawn : public Piece {
-public:
-	Pawn();
-	Pawn(int l, int c, Board *b, char co, double v);
-	~Pawn() {};
-	char getName();
-	void calculateAuthorizedMoves();
+class Pawn : public Piece 
+{
+	public:
+								Pawn							();
+								Pawn							(int l, int c, Board *b, char co, double v);
+								~Pawn							() {};
+		char					get_name						();
+		void					compute_authorized_moves		();
 
-private:
+	private:
 };
 
 #endif
