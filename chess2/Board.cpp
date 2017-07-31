@@ -157,3 +157,13 @@ void Board::compute_pined_pieces() {
 
 	//TODO : Look in all direction from Kings position if a Piece is pined
 }
+
+bool Board::is_case_occupied(int l, int c)
+{
+	return get_case(l, c)->is_occupied();
+}
+
+bool Board::is_case_occupied_by_opponant(int l, int c, char player_color)
+{
+	return (is_case_occupied(l, c) && get_case(l, c)->get_occupant()->get_color() != player_color);
+}
