@@ -92,8 +92,10 @@ int Board::game() {
 		do {
 			action = current_player->play();
 
-			if (action == Player::ABANDON) return (current_player->get_color() == 'w') ? Board::BLACK_WIN : Board::WHITE_WIN;
-			if (action == Player::OFFER_DRAW) {
+			if (action == Player::ABANDON) 
+				return (current_player->get_color() == 'w') ? Board::BLACK_WIN : Board::WHITE_WIN;
+			if (action == Player::OFFER_DRAW) 
+			{
 				cout << "Accept draw ? (y/n) : ";
 				accept = getchar();
 				if (accept == 'y' || accept == 'Y') return Board::DRAW;

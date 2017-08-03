@@ -32,6 +32,8 @@ class Piece
 		void					add_knight_moves						();
 		void					add_white_pawn_moves					();
 		void					add_black_pawn_moves					();
+		void					add_authorized_move						(int line, int column, int case_number);
+		bool					check_and_add_authorized_move			(int line, int column, int case_number);
 
 	protected:
 		int						line;
