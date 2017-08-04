@@ -18,7 +18,7 @@ class Piece
 		int						get_coordinates							();
 		virtual void			compute_authorized_moves				() = 0;
 		void					print_authorized_moves					();
-		void					set_coordinates							(int l, int c);
+		virtual void			set_coordinates							(int l, int c);
 		bool					is_authorized_move						(int m);
 		void					set_pined								(bool p) { is_pined = p; }
 		void					add_top_left_diagonal_moves				(int distance);
@@ -53,11 +53,10 @@ class King : public Piece
 								~King							() {};
 		bool					has_moved						();
 		bool					is_check						();
-		void					k_castling						();
-		void					q_castling						();
 		char					get_name						();
 		void					set_moved						(bool m);
 		void					compute_authorized_moves		();
+		void					set_coordinates					(int l, int c);
 
 	private:
 		bool					moved;

@@ -3,48 +3,56 @@
 
 using namespace std;
 
-Player::Player() {
+Player::Player() 
+{
 	board = 0;
 }
 
-Player::Player(Board *b, char c) {
+Player::Player(Board *b, char c) 
+{
 	board = b;
 	color = c;
 }
 
-void Player::add_piece(Piece *p) {
+void Player::add_piece(Piece *p) 
+{
 	pieces.push_back(p);
 }
 
-void Player::remove_piece(Piece *p) {
+void Player::remove_piece(Piece *p) 
+{
 	pieces.remove(p);
 	delete p;
 }
 
-void Player::print_list_pieces() {
+void Player::print_list_pieces() 
+{
 	list<Piece*>::iterator it;
 
 	for (it = pieces.begin(); it != pieces.end(); it++)
 		cout << (*it)->get_name() << ",";
 }
 
-void Player::calculate_all_authorized_moves() {
+void Player::calculate_all_authorized_moves() 
+{
 	list<Piece*>::iterator it;
 
-	for (it = pieces.begin(); it != pieces.end(); it++) {
+	for (it = pieces.begin(); it != pieces.end(); it++) 
+	{
 		(*it)->compute_authorized_moves();
 	}
 }
 
-void Player::print_all_authorized_moves() {
+void Player::print_all_authorized_moves() 
+{
 	list<Piece*>::iterator it;
 
-	for (it = pieces.begin(); it != pieces.end(); it++) {
+	for (it = pieces.begin(); it != pieces.end(); it++) 
 		(*it)->print_authorized_moves();
-	}
 }
 
-void Player::k_castling() {
+void Player::k_castling() 
+{
 	int l = (this->get_color() == 'w') ? 0 : 7;
 
 	// - move king
@@ -62,7 +70,8 @@ void Player::k_castling() {
 	((King*)board->get_case(l, 6)->get_occupant())->set_moved(true);
 }
 
-void Player::q_castling() {
+void Player::q_castling() 
+{
 	int l = (this->get_color() == 'w') ? 0 : 7;
 
 	// - move king
@@ -92,14 +101,18 @@ int Player::play() {
 
 		if (move == "abandon") return ABANDON;
 		else if (move == "draw") return OFFER_DRAW;
-		else if (move == "0-0") {
-			if (check_k_castling()) {
+		else if (move == "0-0") 
+		{
+			if (check_k_castling()) 
+			{
 				k_castling();
 				return MOVE;
 			}
 		}
-		else if (move == "0-0-0") {
-			if (check_q_castling()) {
+		else if (move == "0-0-0") 
+		{
+			if (check_q_castling()) 
+			{
 				q_castling();
 				return MOVE;
 			}

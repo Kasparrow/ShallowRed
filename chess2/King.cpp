@@ -47,3 +47,11 @@ void King::compute_authorized_moves()
 	add_left_line_moves(1);
 	add_bottom_line_moves(1);
 }
+
+void King::set_coordinates(int l, int c)
+{
+	Piece::set_coordinates(l, c);
+
+	if(!has_moved())
+		set_moved(true);
+}

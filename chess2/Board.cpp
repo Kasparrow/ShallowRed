@@ -110,19 +110,25 @@ int Board::game() {
 	} while (true);
 }
 
-bool Board::move(int x_start, int y_start, int x_end, int y_end, char c) {
-	if (get_case(x_start, y_start)->is_occupied()) {
+bool Board::move(int x_start, int y_start, int x_end, int y_end, char c) 
+{
+	if (get_case(x_start, y_start)->is_occupied()) 
+	{
 		//If authorizedMove
-		if (get_case(x_start, y_start)->get_occupant()->is_authorized_move((x_end * 8) + y_end) && get_case(x_start, y_start)->get_occupant()->get_color() == c) {
-			if (get_case(x_end, y_end)->is_occupied()) {
+		if (get_case(x_start, y_start)->get_occupant()->is_authorized_move((x_end * 8) + y_end) && get_case(x_start, y_start)->get_occupant()->get_color() == c) 
+		{
+			if (get_case(x_end, y_end)->is_occupied()) 
+			{
 				if (c == 'b')
 					white.remove_piece(get_case(x_end, y_end)->get_occupant());
 				else
 					black.remove_piece(get_case(x_end, y_end)->get_occupant());
 			}
+
 			get_case(x_end, y_end)->set_occupant((get_case(x_start, y_start))->get_occupant());
 			(get_case(x_end, y_end)->get_occupant())->set_coordinates(x_end, y_end);
 			get_case(x_start, y_start)->set_occupant(0);
+
 			return true;
 		}
 	}
