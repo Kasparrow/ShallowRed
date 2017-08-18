@@ -18,9 +18,15 @@ Case::Case(int l, int c, Board* b, Piece *o) : threatened_by() {
 
 void Case::print() {
 	if (occupant == 0)
-		cout << ".";
+		cout << " . ";
 	else
-		cout << occupant->get_name();
+	{
+		if (occupant->is_pinned())
+			cout << '(' << occupant->get_name() << ')';
+		else
+			cout << ' ' << occupant->get_name() << ' ';
+	}
+		
 }
 
 bool Case::is_occupied() {

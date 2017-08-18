@@ -49,3 +49,30 @@ int col_char_to_int(char c) {
 
 	return 0;
 }
+
+int direction(int src, int dest)
+{
+	int x_src = src / 8,
+		y_src = src % 8,
+		x_dest = dest / 8,
+		y_dest = dest % 8;
+
+	// - same line
+	if (x_src == x_dest)
+		return  0;
+
+	// - same column
+	else if (y_src == y_dest)
+		return 1;
+
+	// - top left to bottom right
+	else if (x_src - x_dest == y_src - y_dest)
+		return 2;
+
+	// - top right to bottom left
+	else if (abs(x_src - x_dest) == abs(y_src - y_dest))
+		return 3;
+
+	// - default
+	return -1;
+}

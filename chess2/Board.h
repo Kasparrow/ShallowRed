@@ -31,6 +31,8 @@ class Board
 		bool						move									(int x_start, int y_start, int x_end, int y_end, char c);
 		bool						is_case_occupied						(int l, int c);
 		bool						is_case_occupied_by_opponant			(int l, int c, char player_color);
+		void						analyze									();
+		void						remove_pined_flags						();
 
 	private:
 		std::array<Case*, 64>		cases;

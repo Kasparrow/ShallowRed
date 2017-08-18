@@ -7,7 +7,7 @@ Knight::Knight(int l, int c, Board *b, char co, double v) : Piece(l, c, b, co, v
 
 char Knight::get_name() 
 {
-	if (color == 'b')
+	if (_color == 'b')
 		return 'N';
 	else
 		return 'n';
@@ -15,7 +15,8 @@ char Knight::get_name()
 
 void Knight::compute_authorized_moves() 
 {
-	authorized_moves.clear();
+	_authorized_moves.clear();
 
-	add_knight_moves();
+	if (!is_pinned())
+		add_knight_moves();
 }

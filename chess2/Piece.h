@@ -19,8 +19,10 @@ class Piece
 		virtual void			compute_authorized_moves				() = 0;
 		void					print_authorized_moves					();
 		virtual void			set_coordinates							(int l, int c);
+		virtual void			compute_pinning							() {};
 		bool					is_authorized_move						(int m);
-		void					set_pined								(bool p) { is_pined = p; }
+		void					set_pinned								(bool p);
+		void					set_pinned								(Piece* p)	{ _is_pinned = true; _pinned_by = p; }
 		void					add_top_left_diagonal_moves				(int distance);
 		void					add_top_right_diagonal_moves			(int distance);
 		void					add_bottom_left_diagonal_moves			(int distance);
@@ -30,19 +32,25 @@ class Piece
 		void					add_left_line_moves						(int distance);
 		void					add_bottom_line_moves					(int distance);
 		void					add_knight_moves						();
-		void					add_white_pawn_moves					();
-		void					add_black_pawn_moves					();
+		void					add_white_pawn_forward_moves			();
+		void					add_white_pawn_take_right_moves			();
+		void					add_white_pawn_take_left_moves			();
+		void					add_black_pawn_forward_moves			();
+		void					add_black_pawn_take_right_moves			();
+		void					add_black_pawn_take_left_moves			();
 		void					add_authorized_move						(int line, int column, int case_number);
 		bool					check_and_add_authorized_move			(int line, int column, int case_number);
+		bool					is_pinned								();
 
 	protected:
-		int						line;
-		int						column;
-		bool					is_pined;
-		char					color;
-		double					value;
-		Board*					board;
-		std::vector<int>		authorized_moves;
+		int						_line;
+		int						_column;
+		bool					_is_pinned;
+		char					_color;
+		double					_value;
+		Board*					_board;
+		Piece*					_pinned_by;
+		std::vector<int>		_authorized_moves;
 };
 
 class King : public Piece 
@@ -52,11 +60,12 @@ class King : public Piece
 								King							(int l, int c, Board *b, char co, double v);
 								~King							() {};
 		bool					has_moved						();
-		bool					is_check						();
+		bool					is_in_check						();
 		char					get_name						();
 		void					set_moved						(bool m);
 		void					compute_authorized_moves		();
 		void					set_coordinates					(int l, int c);
+		void					check_pinned_pieces				(int line_modifier, int column_modifier);
 
 	private:
 		bool					moved;

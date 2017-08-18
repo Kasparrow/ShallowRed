@@ -55,41 +55,43 @@ Board::~Board() {
 		delete cases[i];
 }
 void Board::print() {
-	cout << "   ---------------------------------\n";
+	cout << "   -------------------------------------------------\n";
 	for (int i = 7; i >= 0; i--) {
 		cout << i + 1 << " ";
 		for (int j = 0; j<8; j++) {
 			cout << " | ";
 			cases[(i * 8) + j]->print();
 		}
-		cout << " |\n   ---------------------------------\n";
+		cout << " |\n   -------------------------------------------------\n";
 	}
-	cout << "     a   b   c   d   e   f   g   h  \n\n";
+	cout << "      a     b     c     d     e     f     g     h   \n\n";
 
-	cout << "----------------------------------------------\n";
+	cout << "-------------------------------------------------\n";
 	cout << "White is check : ";
 	cout << white.is_check() << endl;
 	cout << "\nBlack is check : ";
 	cout << black.is_check() << endl;
 	cout << endl;
-	cout << "----------------------------------------------\n";
+	cout << "-------------------------------------------------\n";
 }
 
 Case* Board::get_case(int l, int c) {
 	return cases[(l * 8) + c];
 }
 
-int Board::game() {
+int Board::game() 
+{
 	int i = 0, action = 0;
 	char accept;
 	Player* current_player = 0;
 
-	do {
+	do 
+	{
 		compute_threats_and_authorized_moves();
-
 		current_player = ((i % 2 == 0) ? &white : &black);
 
-		do {
+		do 
+		{
 			action = current_player->play();
 
 			if (action == Player::ABANDON) 
@@ -103,8 +105,7 @@ int Board::game() {
 			}
 		} while (action != Player::MOVE);
 
-		compute_threats_and_authorized_moves();
-		compute_pined_pieces();
+		analyze();
 		print();
 		i++;
 	} while (true);
@@ -141,13 +142,14 @@ void Board::compute_threats_and_authorized_moves() {
 	for (int j = 7; j >= 0; j--)
 		for (int k = 0; k<8; k++)
 			get_case(j, k)->clear_threats();
+
 	//Threats are automatically calculated when we calculate players authorizedMoves
+	compute_pined_pieces();
 	white.calculate_all_authorized_moves();
 	black.calculate_all_authorized_moves();
 }
 
 void Board::compute_pined_pieces() {
-	int x_white_king, y_white_king, x_black_king, y_black_king;
 
 	//Get Kings position
 	list<Piece *> whitePieces = white.get_list_pieces();
@@ -155,15 +157,26 @@ void Board::compute_pined_pieces() {
 
 	list<Piece *>::iterator it;
 
-	for (it = whitePieces.begin(); (*it)->get_name() != 'k'; it++);
-	x_white_king = (*it)->get_coordinates() / 8;
-	y_white_king = (*it)->get_coordinates() % 8;
+	King* white_king = 0;
+	King* black_king = 0;
 
-	for (it = blackPieces.begin(); (*it)->get_name() != 'K'; it++);
-	x_black_king = (*it)->get_coordinates() / 8;
-	y_black_king = (*it)->get_coordinates() % 8;
+	for (it = whitePieces.begin(); (*it)->get_name() != 'k'; it++); 
+	white_king = (King*)(*it);
 
-	//TODO : Look in all direction from Kings position if a Piece is pined
+	for (it = blackPieces.begin(); (*it)->get_name() != 'K'; it++); 
+	black_king = (King*)(*it);
+
+	for (int line_modifier = -1; line_modifier <= 1; line_modifier++)
+	{
+		for (int column_modifier = -1; column_modifier <= 1; column_modifier++)
+		{
+			if (line_modifier == 0 && column_modifier == 0)
+				continue;
+
+			white_king->check_pinned_pieces(line_modifier, column_modifier);
+			black_king->check_pinned_pieces(line_modifier, column_modifier);
+		}
+	}
 }
 
 bool Board::is_case_occupied(int l, int c)
@@ -174,4 +187,25 @@ bool Board::is_case_occupied(int l, int c)
 bool Board::is_case_occupied_by_opponant(int l, int c, char player_color)
 {
 	return (is_case_occupied(l, c) && get_case(l, c)->get_occupant()->get_color() != player_color);
+}
+
+void Board::remove_pined_flags()
+{
+	list<Piece *> white_pieces = white.get_list_pieces();
+	list<Piece *> black_pieces = black.get_list_pieces();
+
+	list<Piece *>::iterator it;
+
+	for (it = white_pieces.begin(); it != white_pieces.end(); it++)
+		(*it)->set_pinned(false);
+
+	for (it = black_pieces.begin(); it != black_pieces.end(); it++)
+		(*it)->set_pinned(false);
+}
+
+void Board::analyze()
+{
+	remove_pined_flags();
+	compute_pined_pieces();
+	compute_threats_and_authorized_moves();
 }
