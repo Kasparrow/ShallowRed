@@ -37,7 +37,6 @@ void Bishop::compute_authorized_moves()
 		default:
 			break;
 		}
-
 	}
 
 	else

@@ -77,6 +77,9 @@ bool Piece::check_and_add_authorized_move(int line, int column, int case_number)
 		if (_board->is_case_occupied_by_opponant(line, column, get_color()))
 			add_authorized_move(line, column, case_number);
 
+		else
+			_board->get_case(line, column)->add_threat(this);
+
 		continue_exploration = false;
 	}
 
@@ -290,6 +293,58 @@ void Piece::add_black_pawn_take_left_moves()
 	{
 		_authorized_moves.push_back((_line - 1) * 8 + (_column - 1));
 		_board->get_case((_line - 1), (_column - 1))->add_threat(this);
+	}
+}
+
+void Piece::add_king_moves()
+{
+	int tmp_line = 0,
+		tmp_col = 0,
+		tmp_case = 0;
+	bool case_exist;
+
+	if (get_color() == 'w')
+	{
+		for (int i = -1; i <= 1; i++)
+		{
+			for (int j = -1; j <= 1; j++)
+			{
+				if (i == 0 && j == 0)
+					continue;
+				else
+				{
+					tmp_line = _line + i;
+					tmp_col = _column + j;
+					tmp_case = (tmp_line * 8) + tmp_col;
+					case_exist = (tmp_line >= 0 && tmp_line < 8 && tmp_col >= 0 && tmp_col < 8);
+
+					if (case_exist && !_board->get_case(tmp_line, tmp_col)->is_threatened_by_black())
+						check_and_add_authorized_move(tmp_line, tmp_col, tmp_case);
+				}
+			}
+		}
+	}
+
+	else
+	{
+		for (int i = -1; i <= 1; i++)
+		{
+			for (int j = -1; j <= 1; j++)
+			{
+				if (i == 0 && j == 0)
+					continue;
+				else
+				{
+					tmp_line = _line + i;
+					tmp_col = _column + j;
+					tmp_case = (tmp_line * 8) + tmp_col;
+					case_exist = (tmp_line >= 0 && tmp_line < 8 && tmp_col >= 0 && tmp_col < 8);
+
+					if (case_exist && !_board->get_case(tmp_line, tmp_col)->is_threatened_by_white())
+						check_and_add_authorized_move(tmp_line, tmp_col, tmp_case);
+				}
+			}
+		}
 	}
 }
 

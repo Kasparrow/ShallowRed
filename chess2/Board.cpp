@@ -113,10 +113,13 @@ int Board::game()
 
 bool Board::move(int x_start, int y_start, int x_end, int y_end, char c) 
 {
+	Piece* piece_to_move = 0;
 	if (get_case(x_start, y_start)->is_occupied()) 
 	{
+		piece_to_move = get_case(x_start, y_start)->get_occupant();
+		bool is_not_in_chess = (c == 'w' && get_white()->is_out_of_check_move(piece_to_move, (x_end * 8) + y_end) || c == 'b' && get_black()->is_out_of_check_move(piece_to_move, (x_end * 8) + y_end));
 		//If authorizedMove
-		if (get_case(x_start, y_start)->get_occupant()->is_authorized_move((x_end * 8) + y_end) && get_case(x_start, y_start)->get_occupant()->get_color() == c) 
+		if (piece_to_move->is_authorized_move((x_end * 8) + y_end) && piece_to_move->get_color() == c && is_not_in_chess)
 		{
 			if (get_case(x_end, y_end)->is_occupied()) 
 			{
@@ -179,6 +182,28 @@ void Board::compute_pined_pieces() {
 	}
 }
 
+void Board::compute_out_of_check_position()
+{
+	std::cout << "Board::out_of_check\n";
+	//Get Kings position
+	list<Piece *> whitePieces = white.get_list_pieces();
+	list<Piece *> blackPieces = black.get_list_pieces();
+
+	list<Piece *>::iterator it;
+
+	King* white_king = 0;
+	King* black_king = 0;
+
+	for (it = whitePieces.begin(); (*it)->get_name() != 'k'; it++);
+	white_king = (King*)(*it);
+
+	for (it = blackPieces.begin(); (*it)->get_name() != 'K'; it++);
+	black_king = (King*)(*it);
+
+	white_king->compute_out_of_check_cases();
+	black_king->compute_out_of_check_cases();
+}
+
 bool Board::is_case_occupied(int l, int c)
 {
 	return get_case(l, c)->is_occupied();
@@ -208,4 +233,15 @@ void Board::analyze()
 	remove_pined_flags();
 	compute_pined_pieces();
 	compute_threats_and_authorized_moves();
+	compute_out_of_check_position();
+}
+
+Player* Board::get_white()
+{
+	return &white;
+}
+
+Player* Board::get_black()
+{
+	return &black;
 }

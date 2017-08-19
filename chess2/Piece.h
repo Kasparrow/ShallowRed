@@ -31,6 +31,7 @@ class Piece
 		void					add_right_line_moves					(int distance);
 		void					add_left_line_moves						(int distance);
 		void					add_bottom_line_moves					(int distance);
+		void					add_king_moves							();
 		void					add_knight_moves						();
 		void					add_white_pawn_forward_moves			();
 		void					add_white_pawn_take_right_moves			();
@@ -66,6 +67,7 @@ class King : public Piece
 		void					compute_authorized_moves		();
 		void					set_coordinates					(int l, int c);
 		void					check_pinned_pieces				(int line_modifier, int column_modifier);
+		void					compute_out_of_check_cases		();
 
 	private:
 		bool					moved;

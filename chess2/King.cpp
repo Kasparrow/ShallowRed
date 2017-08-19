@@ -26,6 +26,89 @@ bool King::is_in_check()
 		return _board->get_case(_line, _column)->is_threatened_by_black();
 }
 
+void King::compute_out_of_check_cases()
+{
+	char color = get_color();
+	Player* player = (color == 'w') ? _board->get_white() : player = _board->get_black();
+	Piece* threatened_by = 0;
+	int coordinates = get_coordinates(),
+		threat_coordinates,
+		x_king = coordinates / 8,
+		y_king = coordinates % 8,
+		threats_counter = _board->get_case(x_king, y_king)->count_color_threats(color),
+		x_threat,
+		y_threat,
+		dir;
+
+	std::list<Piece*> threats = _board->get_case(x_king, y_king)->get_threats();
+	std::list<Piece*>::iterator it;
+
+	player->clear_out_of_check_cases();
+
+	std::cout << get_color() << " is check ? : " << player->is_check() << std::endl;
+	std::cout << "Threats counter : " << threats_counter << std::endl;
+	std::cout << "threat list is empty ? : " << _board->get_case(x_king, y_king)->get_threats().empty() << std::endl;
+	
+
+	if (player->is_check() && threats_counter == 1 && !_board->get_case(x_king, y_king)->get_threats().empty())
+	{
+
+		for (it = threats.begin(); it != threats.end(); it++)
+			if ((*it)->get_color() != color)
+				threatened_by = *it;
+		
+		threat_coordinates = threatened_by->get_coordinates();
+		x_threat = threat_coordinates / 8;
+		y_threat = threat_coordinates % 8;
+		dir = direction(coordinates, threat_coordinates);
+
+		player->add_out_of_check_case(x_threat * 8 + y_threat);
+
+		switch (dir)
+		{
+			case 0:
+				if (y_king > y_threat)
+					for (int i = y_threat + 1; i < y_king; i++)
+						player->add_out_of_check_case(x_king + i);
+
+				else
+					for (int i = y_king + 1; i < y_threat; i++)
+						player->add_out_of_check_case(x_king + i);
+				break;
+
+			case 1:
+				if (x_king > x_threat)
+					for (int i = x_threat + 1; i < x_king; i++)
+						player->add_out_of_check_case(i * 8 + y_king);
+
+				else
+					for (int i = x_king + 1; i < x_threat; i++)
+						player->add_out_of_check_case(i * 8 + y_king);
+				break;
+
+			case 2:
+				if (y_king > y_threat)
+					for (int i = 1; y_threat + i < y_king; i++)
+						player->add_out_of_check_case((x_threat + i) * 8 + y_threat + i);
+				else
+					for (int i = 1; y_king + i < y_threat; i++)
+						player->add_out_of_check_case((x_king + i) * 8 + y_king + i);
+				break;
+			case 3:
+				if(y_king > y_threat)
+					for (int i = 1; y_threat + i < y_king; i++)
+						player->add_out_of_check_case((x_threat + i) * 8 + y_threat - i);
+				else
+					for (int i = 1; y_king + i < y_threat; i++)
+						player->add_out_of_check_case((x_king - i) * 8 + y_king + i);
+				break;
+			default:
+				break;
+		}
+	}
+	
+}
+
 char King::get_name() 
 {
 	if (_color == 'b')
@@ -38,14 +121,16 @@ void King::compute_authorized_moves()
 {
 	_authorized_moves.clear();
 
-	add_top_left_diagonal_moves(1);
+	add_king_moves();
+
+	/*add_top_left_diagonal_moves(1);
 	add_top_right_diagonal_moves(1);
 	add_bottom_left_diagonal_moves(1);
 	add_bottom_right_diagonal_moves(1);
 	add_top_line_moves(1);
 	add_right_line_moves(1);
 	add_left_line_moves(1);
-	add_bottom_line_moves(1);
+	add_bottom_line_moves(1);*/
 }
 
 void King::set_coordinates(int l, int c)
