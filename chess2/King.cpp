@@ -122,15 +122,6 @@ void King::compute_authorized_moves()
 	_authorized_moves.clear();
 
 	add_king_moves();
-
-	/*add_top_left_diagonal_moves(1);
-	add_top_right_diagonal_moves(1);
-	add_bottom_left_diagonal_moves(1);
-	add_bottom_right_diagonal_moves(1);
-	add_top_line_moves(1);
-	add_right_line_moves(1);
-	add_left_line_moves(1);
-	add_bottom_line_moves(1);*/
 }
 
 void King::set_coordinates(int l, int c)

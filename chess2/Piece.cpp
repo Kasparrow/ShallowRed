@@ -318,8 +318,11 @@ void Piece::add_king_moves()
 					tmp_case = (tmp_line * 8) + tmp_col;
 					case_exist = (tmp_line >= 0 && tmp_line < 8 && tmp_col >= 0 && tmp_col < 8);
 
-					if (case_exist && !_board->get_case(tmp_line, tmp_col)->is_threatened_by_black())
+					if (case_exist && !(_board->get_case(tmp_line, tmp_col))->is_threatened_by_black())
+					{
+						cout << col_int_to_char(tmp_col + 1) << " " << (tmp_line + 1) << " is not threatened by blacks\n";
 						check_and_add_authorized_move(tmp_line, tmp_col, tmp_case);
+					}
 				}
 			}
 		}
@@ -359,4 +362,14 @@ void Piece::set_pinned(bool p)
 bool Piece::is_pinned()
 {
 	return _is_pinned;
+}
+
+std::vector<int> Piece::get_authorized_moves()
+{
+	return _authorized_moves;
+}
+
+Case* Piece::get_case()
+{
+	return _board->get_case(_line, _column);
 }

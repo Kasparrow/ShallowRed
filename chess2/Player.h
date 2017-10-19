@@ -30,13 +30,15 @@ class Player
 		bool					check_k_castling					();
 		bool					check_q_castling					();
 		bool					is_check							();
+		bool					is_check_mat						();
 		void					k_castling							();
 		void					q_castling							();
 		std::list<Piece*>&		get_list_pieces						();
 		void					clear_out_of_check_cases			();
 		void					add_out_of_check_case				(int c);
 		bool					is_out_of_check_move				(Piece* p, int c);
-		std::vector<int>&		get_out_of_check_moves				();
+		std::vector<int>&		get_out_of_check_cases				();
+		bool					has_out_of_check_moves				();	
 
 	private:
 		std::list<Piece*>	_pieces;

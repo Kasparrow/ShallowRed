@@ -247,7 +247,60 @@ bool Player::is_out_of_check_move(Piece* p, int c)
 	return (p->get_name() == 'k' || p->get_name() == 'K' || std::find(_out_of_check_cases.begin(), _out_of_check_cases.end(), c) != _out_of_check_cases.end());
 }
 
-std::vector<int>& Player::get_out_of_check_moves()
+bool Player::is_check_mat()
+{
+	char opponent_color;
+
+	// - is check ?
+	if (!is_check())
+	{
+		cout << "IS NOT CHECK\n";
+		return false;
+	}
+	
+	// get king pointer
+	list<Piece*>::iterator it;
+
+	for (it = _pieces.begin(); it != _pieces.end(); it++)
+		if ((*it)->get_name() == 'K' || (*it)->get_name() == 'k')
+			break;
+
+	// - king has authorized moves
+	if (!(*it)->get_authorized_moves().empty())
+	{
+		cout << "AUTHORIZED MOVE IS NOT EMPTY\n";
+		(*it)->print_authorized_moves();
+
+		return false;
+	}
+
+	// - out of checks moves and king is not threatened by more than one piece
+	opponent_color = ((*it)->get_color() == 'w') ? 'b' : 'w';
+	if ((*it)->get_case()->count_color_threats(opponent_color) < 2 && has_out_of_check_moves())
+	{
+		cout << "out of checks moves and king is not threatened by more than one piece\n";
+		return false;
+	}
+
+	return true;
+
+}
+
+std::vector<int>& Player::get_out_of_check_cases()
 {
 	return _out_of_check_cases;
+}
+
+bool Player::has_out_of_check_moves()
+{
+	// - for each Piece, check if there is an authorized move to one of the out of check cases
+	list<Piece*>::iterator it_piece;
+	vector<int>::iterator it_move;
+
+	for (it_piece = _pieces.begin(); it_piece != _pieces.end(); it_piece++)
+		for (it_move = _out_of_check_cases.begin(); it_move != _out_of_check_cases.end(); it_move++)
+			if ((*it_piece)->is_authorized_move(*it_move))
+				return true;
+
+	return false;
 }

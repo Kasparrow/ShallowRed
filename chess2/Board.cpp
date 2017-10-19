@@ -83,12 +83,15 @@ int Board::game()
 {
 	int i = 0, action = 0;
 	char accept;
-	Player* current_player = 0;
+	Player  *current_player = 0,
+			*opponent_player = 0;
 
 	do 
 	{
-		compute_threats_and_authorized_moves();
 		current_player = ((i % 2 == 0) ? &white : &black);
+		opponent_player = ((i % 2 == 0) ? &black : &white);
+		compute_threats_and_authorized_moves(current_player);
+		
 
 		do 
 		{
@@ -105,9 +108,13 @@ int Board::game()
 			}
 		} while (action != Player::MOVE);
 
-		analyze();
+		analyze(current_player);
 		print();
 		i++;
+
+		if (opponent_player->is_check_mat())
+			return (opponent_player->get_color() == 'w') ? Board::BLACK_WIN : Board::WHITE_WIN;
+
 	} while (true);
 }
 
@@ -141,15 +148,27 @@ bool Board::move(int x_start, int y_start, int x_end, int y_end, char c)
 	return false;
 }
 
-void Board::compute_threats_and_authorized_moves() {
+void Board::compute_threats_and_authorized_moves(Player* current_player) 
+{
 	for (int j = 7; j >= 0; j--)
 		for (int k = 0; k<8; k++)
 			get_case(j, k)->clear_threats();
 
 	//Threats are automatically calculated when we calculate players authorizedMoves
 	compute_pined_pieces();
-	white.calculate_all_authorized_moves();
-	black.calculate_all_authorized_moves();
+
+	if (current_player->get_color() == 'w')
+	{
+		white.calculate_all_authorized_moves();
+		black.calculate_all_authorized_moves();
+	}
+
+	else
+	{
+		black.calculate_all_authorized_moves();
+		white.calculate_all_authorized_moves();
+	}
+	
 }
 
 void Board::compute_pined_pieces() {
@@ -228,11 +247,11 @@ void Board::remove_pined_flags()
 		(*it)->set_pinned(false);
 }
 
-void Board::analyze()
+void Board::analyze(Player* current_player)
 {
 	remove_pined_flags();
 	compute_pined_pieces();
-	compute_threats_and_authorized_moves();
+	compute_threats_and_authorized_moves(current_player);
 	compute_out_of_check_position();
 }
 

@@ -6,6 +6,7 @@
 #include <algorithm>
 
 class Board;
+class Case;
 
 class Piece 
 {
@@ -17,6 +18,7 @@ class Piece
 		char					get_color								();
 		int						get_coordinates							();
 		virtual void			compute_authorized_moves				() = 0;
+		std::vector<int>		get_authorized_moves					();
 		void					print_authorized_moves					();
 		virtual void			set_coordinates							(int l, int c);
 		virtual void			compute_pinning							() {};
@@ -42,6 +44,7 @@ class Piece
 		void					add_authorized_move						(int line, int column, int case_number);
 		bool					check_and_add_authorized_move			(int line, int column, int case_number);
 		bool					is_pinned								();
+		Case*					get_case								();
 
 	protected:
 		int						_line;
