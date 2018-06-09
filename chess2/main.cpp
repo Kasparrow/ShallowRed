@@ -1,4 +1,5 @@
 #include<iostream>
+#include <stdio.h>
 #include "Board.h"
 
 using namespace std;
@@ -22,5 +23,8 @@ int main(int argc, char** argv) {
 	default:
 		break;
 	}
+
+	getchar();
+
 	return 0;
 }
