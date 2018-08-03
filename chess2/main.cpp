@@ -1,30 +1,24 @@
 #include<iostream>
 #include <stdio.h>
+
 #include "Board.h"
+#include "Functions.h"
+
+#define DEBUG true
 
 using namespace std;
 
-int main(int argc, char** argv) {
-	Board b;
-	int res;
+int main(int argc, char** argv) 
+{
+    Board b;
+    int res;
 
-	b.print();
-	res = b.game();
+    b.print();
+    res = b.game();
+    print_result(res);
 
-	switch (res) {
-	case Board::BLACK_WIN:
-		cout << "0 - 1\n";
-		break;
-	case Board::WHITE_WIN:
-		cout << "1 - 0\n";
-		break;
-	case Board::DRAW:
-		cout << "0,5 - 0,5\n";
-	default:
-		break;
-	}
+    std::cout << "Press any key to exit program\n";
+    getchar();
 
-	getchar();
-
-	return 0;
+    return 0;
 }

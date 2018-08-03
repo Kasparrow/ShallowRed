@@ -13,60 +13,84 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Fichiers sources\Piece">
+      <UniqueIdentifier>{f4e490c2-9f07-4d6b-9442-323289eef323}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Board">
+      <UniqueIdentifier>{1c6ef50a-b803-4864-bee5-3e4b92124dc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Player">
+      <UniqueIdentifier>{26dd9bd1-91cf-4e51-85a0-82dcab409345}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Utils">
+      <UniqueIdentifier>{075b3b49-1e13-419d-a6ba-b037974578cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Piece">
+      <UniqueIdentifier>{a4dd3a58-a7b4-4b29-8a6f-24746dced315}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Board">
+      <UniqueIdentifier>{ba117f2d-2e2c-436d-926e-bfb07a471a9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Utils">
+      <UniqueIdentifier>{0fe1f93e-ac2f-42dd-8741-d128bfb6f397}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Player">
+      <UniqueIdentifier>{51238144-321a-4694-94cf-36c8f14dac52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Bishop.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Board.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Case.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Functions.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="King.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Knight.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Pawn.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Piece.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Queen.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Rook.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Bishop.cpp">
+      <Filter>Fichiers sources\Piece</Filter>
+    </ClCompile>
+    <ClCompile Include="Knight.cpp">
+      <Filter>Fichiers sources\Piece</Filter>
+    </ClCompile>
+    <ClCompile Include="King.cpp">
+      <Filter>Fichiers sources\Piece</Filter>
+    </ClCompile>
+    <ClCompile Include="Pawn.cpp">
+      <Filter>Fichiers sources\Piece</Filter>
+    </ClCompile>
+    <ClCompile Include="Piece.cpp">
+      <Filter>Fichiers sources\Piece</Filter>
+    </ClCompile>
+    <ClCompile Include="Queen.cpp">
+      <Filter>Fichiers sources\Piece</Filter>
+    </ClCompile>
+    <ClCompile Include="Rook.cpp">
+      <Filter>Fichiers sources\Piece</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Fichiers sources\Board</Filter>
+    </ClCompile>
+    <ClCompile Include="Case.cpp">
+      <Filter>Fichiers sources\Board</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Fichiers sources\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Functions.cpp">
+      <Filter>Fichiers sources\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Piece.h">
+      <Filter>Fichiers d%27en-tête\Piece</Filter>
+    </ClInclude>
     <ClInclude Include="Board.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Board</Filter>
     </ClInclude>
     <ClInclude Include="Case.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Board</Filter>
     </ClInclude>
     <ClInclude Include="Functions.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Piece.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
