@@ -31,10 +31,16 @@ void Player::print_list_pieces()
         cout << it->get_name() << ",";
 }
 
-void Player::calculate_all_authorized_moves() 
+void Player::compute_authorized_moves() 
 {
     for (auto it : _pieces)
         it->compute_authorized_moves();
+}
+
+void Player::compute_threats()
+{
+  for (auto it : _pieces)
+    it->compute_threats();
 }
 
 void Player::print_all_authorized_moves() 

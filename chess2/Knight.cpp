@@ -20,3 +20,8 @@ void Knight::compute_authorized_moves()
     if (!is_pinned())
         add_knight_moves();
 }
+
+void Knight::compute_threats()
+{
+    add_knight_threats();
+}

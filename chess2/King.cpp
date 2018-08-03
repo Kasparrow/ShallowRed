@@ -124,6 +124,14 @@ void King::compute_authorized_moves()
     add_king_moves();
 }
 
+void King::compute_threats()
+{
+  _authorized_moves.clear();
+
+  add_king_threats();
+}
+
+
 void King::set_coordinates(int l, int c)
 {
     Piece::set_coordinates(l, c);

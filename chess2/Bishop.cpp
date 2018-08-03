@@ -9,11 +9,9 @@ Bishop::Bishop(int l, int c, Board *b, char co, double v) : Piece(l, c, b, co, v
 
 }
 
-char Bishop::get_name() {
-    if (_color == 'b')
-        return 'B';
-    else
-        return 'b';
+char Bishop::get_name() 
+{
+    return (_color == 'b') ? 'B' : 'b';
 }
 
 void Bishop::compute_authorized_moves()
@@ -46,4 +44,11 @@ void Bishop::compute_authorized_moves()
         add_bottom_right_diagonal_moves(8);
         add_bottom_left_diagonal_moves(8);
     }
+}
+void Bishop::compute_threats()
+{
+    add_top_left_diagonal_moves(8);
+    add_top_right_diagonal_moves(8);
+    add_bottom_right_diagonal_moves(8);
+    add_bottom_left_diagonal_moves(8);
 }

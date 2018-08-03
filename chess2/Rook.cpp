@@ -56,3 +56,11 @@ void Rook::compute_authorized_moves()
         add_bottom_line_moves(8);
     }
 }
+
+void Rook::compute_threats()
+{
+    add_top_line_threats(8);
+    add_right_line_threats(8);
+    add_left_line_threats(8);
+    add_bottom_line_threats(8);
+}

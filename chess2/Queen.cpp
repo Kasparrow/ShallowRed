@@ -56,3 +56,15 @@ void Queen::compute_authorized_moves()
         add_bottom_line_moves(8);
     }
 }
+
+void Queen::compute_threats()
+{
+    add_top_left_diagonal_threats(8);
+    add_top_right_diagonal_threats(8);
+    add_bottom_left_diagonal_threats(8);
+    add_bottom_right_diagonal_threats(8);
+    add_top_line_threats(8);
+    add_right_line_threats(8);
+    add_left_line_threats(8);
+    add_bottom_line_threats(8);
+}

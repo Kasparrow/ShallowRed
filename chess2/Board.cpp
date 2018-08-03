@@ -170,6 +170,7 @@ bool Board::move(int x_start, int y_start, int x_end, int y_end, char c)
 
 void Board::compute_threats_and_authorized_moves(Player* current_player) 
 {
+    // clear threats
     for (int j = 7; j >= 0; j--)
         for (int k = 0; k<8; k++)
             get_case(j, k)->clear_threats();
@@ -184,14 +185,14 @@ void Board::compute_threats_and_authorized_moves(Player* current_player)
 
     if (current_player->get_color() == 'w')
     {
-        white->calculate_all_authorized_moves();
-        black->calculate_all_authorized_moves();
+        white->compute_authorized_moves();
+        black->compute_authorized_moves();
     }
 
     else
     {
-        black->calculate_all_authorized_moves();
-        white->calculate_all_authorized_moves();
+        black->compute_authorized_moves();
+        white->compute_authorized_moves();
     }
     
 }

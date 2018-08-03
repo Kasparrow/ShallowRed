@@ -25,7 +25,8 @@ class Player
         void                    add_piece                           (Piece *p);
         void                    remove_piece                        (Piece *p);
         void                    print_list_pieces                   ();
-        void                    calculate_all_authorized_moves      ();
+        void                    compute_threats                     ();
+        void                    compute_authorized_moves            ();
         void                    print_all_authorized_moves          ();
         int                     play                                ();
         char                    get_color                           ();

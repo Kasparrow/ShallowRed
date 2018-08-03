@@ -21,6 +21,7 @@ class Piece
         char                    get_color                               ();
         int                     get_coordinates                         ();
         virtual void            compute_authorized_moves                () = 0;
+        virtual void            compute_threats                         () = 0;
         std::vector<int>        get_authorized_moves                    ();
         void                    print_authorized_moves                  ();
         virtual void            set_coordinates                         (int l, int c);
@@ -28,6 +29,8 @@ class Piece
         bool                    is_authorized_move                      (int m);
         void                    set_pinned                              (bool p);
         void                    set_pinned                              (Piece* p)    { _is_pinned = true; _pinned_by = p; }
+        
+        // - authorized moves methods
         void                    add_top_left_diagonal_moves             (int distance);
         void                    add_top_right_diagonal_moves            (int distance);
         void                    add_bottom_left_diagonal_moves          (int distance);
@@ -45,9 +48,28 @@ class Piece
         void                    add_black_pawn_take_right_moves         ();
         void                    add_black_pawn_take_left_moves          ();
         void                    add_authorized_move                     (int line, int column, int case_number);
+        
+        // - threats method
+        void                    add_top_left_diagonal_threats           (int distance);
+        void                    add_top_right_diagonal_threats          (int distance);
+        void                    add_bottom_left_diagonal_threats        (int distance);
+        void                    add_bottom_right_diagonal_threats       (int distance);
+        void                    add_top_line_threats                    (int distance);
+        void                    add_right_line_threats                  (int distance);
+        void                    add_left_line_threats                   (int distance);
+        void                    add_bottom_line_threats                 (int distance);
+        void                    add_king_threats                        ();
+        void                    add_knight_threats                      ();
+        void                    add_white_pawn_take_right_threats       ();
+        void                    add_white_pawn_take_left_threats        ();
+        void                    add_black_pawn_take_right_threats       ();
+        void                    add_black_pawn_take_left_threats        ();
         void                    add_threat                              (int line, int column, int case_number);
         bool                    check_and_add_authorized_move           (int line, int column, int case_number);
         bool                    is_pinned                               ();
+        
+        
+        // - position methods
         Case*                   get_case                                ();
 
     protected:
@@ -72,6 +94,7 @@ class King : public Piece
         char                    get_name                                ();
         void                    set_moved                               (bool m);
         void                    compute_authorized_moves                ();
+        void                    compute_threats                         ();
         void                    set_coordinates                         (int l, int c);
         void                    check_pinned_pieces                     (int line_modifier, int column_modifier);
         void                    compute_out_of_check_cases              ();
@@ -88,6 +111,7 @@ class Queen : public Piece
                                 ~Queen                                  () {};
         char                    get_name                                ();
         void                    compute_authorized_moves                ();
+        void                    compute_threats                         ();
 };
 
 class Rook : public Piece 
@@ -100,6 +124,7 @@ class Rook : public Piece
         char                    get_name                                ();
         void                    set_moved                               (bool m);
         void                    compute_authorized_moves                ();
+        void                    compute_threats                         ();
 
     private:
         bool                    moved;
@@ -113,6 +138,7 @@ class Knight : public Piece
                                 ~Knight                                 () {};
         char                    get_name                                ();
         void                    compute_authorized_moves                ();
+        void                    compute_threats                         ();
 };
 
 class Bishop : public Piece 
@@ -123,6 +149,7 @@ class Bishop : public Piece
                                 ~Bishop                                 () {};
         char                    get_name                                ();
         void                    compute_authorized_moves                ();
+        void                    compute_threats                         ();
 };
 
 class Pawn : public Piece 
@@ -133,6 +160,7 @@ class Pawn : public Piece
                                 ~Pawn                                   () {};
         char                    get_name                                ();
         void                    compute_authorized_moves                ();
+        void                    compute_threats                         ();
 };
 
 #endif

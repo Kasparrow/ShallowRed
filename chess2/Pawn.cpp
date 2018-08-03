@@ -80,3 +80,18 @@ void Pawn::compute_authorized_moves()
         }
     }
 } 
+
+void Pawn::compute_threats()
+{
+    if (_color == 'w')
+    {
+        add_white_pawn_take_left_threats();
+        add_white_pawn_take_right_moves();
+    }
+
+    else if (_color == 'b')
+    {
+      add_black_pawn_take_right_threats();
+      add_black_pawn_take_left_threats();
+    }
+}
