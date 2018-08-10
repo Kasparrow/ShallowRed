@@ -8,6 +8,7 @@ class Node
 {
   public:
     Node();
+    Node(double value);
     ~Node();
     void add_child(Node* n);
     void remove_child(Node* n);

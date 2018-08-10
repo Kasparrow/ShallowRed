@@ -2,13 +2,20 @@
 
 
 
-Node::Node()
+Node::Node() : _childs()
 {
+  _value = 0;
 }
 
+Node::Node(double value) : _childs()
+{
+  _value = value;
+}
 
 Node::~Node()
 {
+  for (auto it : _childs)
+    delete it;
 }
 
 
