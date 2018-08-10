@@ -126,6 +126,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Queen.cpp" />
     <ClCompile Include="Rook.cpp" />
+    <ClCompile Include="ShallowRed.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
@@ -133,6 +134,7 @@
     <ClInclude Include="Functions.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="ShallowRed.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
