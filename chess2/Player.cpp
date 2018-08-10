@@ -22,7 +22,6 @@ void Player::add_piece(Piece *p)
 void Player::remove_piece(Piece *p) 
 {
     _pieces.remove(p);
-    delete p;
 }
 
 void Player::print_list_pieces() 

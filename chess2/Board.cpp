@@ -196,6 +196,18 @@ void Board::cancel_move()
 
   force_move(last_move->get_x_end(), last_move->get_y_end(), last_move->get_x_start(), last_move->get_y_start());
 
+  Piece* take = last_move->get_take();
+
+  if (take != nullptr)
+  {
+    get_case(last_move->get_x_end(), last_move->get_y_end())->set_occupant(take);
+    
+    if (take->get_color() == 'w')
+      white->add_piece(take);
+    else
+      black->add_piece(take);
+  }
+
   delete last_move;
 }
 
