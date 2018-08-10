@@ -165,7 +165,7 @@ bool Board::move(int x_start, int y_start, int x_end, int y_end, char c)
 
             get_case(x_end, y_end)->set_occupant((get_case(x_start, y_start))->get_occupant());
             (get_case(x_end, y_end)->get_occupant())->set_coordinates(x_end, y_end);
-            get_case(x_start, y_start)->set_occupant(0);
+            get_case(x_start, y_start)->set_occupant(nullptr);
 
             Move* m = new Move(x_start, y_start, x_end, y_end, piece_to_take);
             _history->add_move(m);
@@ -184,6 +184,19 @@ void Board::force_move(int x_start, int y_start, int x_end, int y_end)
 
   if (!get_case(x_start, y_start)->is_occupied())
     return;
+
+  get_case(x_end, y_end)->set_occupant((get_case(x_start, y_start))->get_occupant());
+  (get_case(x_end, y_end)->get_occupant())->set_coordinates(x_end, y_end);
+  get_case(x_start, y_start)->set_occupant(nullptr);
+}
+
+void Board::cancel_move()
+{
+  Move* last_move = _history->cancel_move();
+
+  force_move(last_move->get_x_end(), last_move->get_y_end(), last_move->get_x_start(), last_move->get_y_start());
+
+  delete last_move;
 }
 
 void Board::compute_threats_and_authorized_moves(Player* current_player) 

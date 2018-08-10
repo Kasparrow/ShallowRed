@@ -19,15 +19,18 @@ void MoveHistory::add_move(Move* m)
     _current_turn++;
 }
 
-void MoveHistory::cancel_move()
+Move* MoveHistory::cancel_move()
 {
   if (_turns.size() == 0)
-    return;
+    return nullptr;
 
+  Move* cancel_move = _turns.back();
   _turns.pop_back();
 
   if (_turns.size() % 2 == 1)
     _current_turn--;
+
+  return cancel_move;
 }
 
 Move* MoveHistory::get_turn(int index, char player_color)

@@ -127,6 +127,12 @@ int Player::play()
                 return MOVE;
             }
         }
+
+        else if (move == "CANCEL")
+        {
+          _board->cancel_move();
+          return MOVE;
+        }
         
         else if (move.length() != 5) 
         {

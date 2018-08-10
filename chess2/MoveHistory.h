@@ -14,7 +14,7 @@ class MoveHistory
     MoveHistory();
     ~MoveHistory();
     void add_move(Move *m);
-    void cancel_move();
+    Move* cancel_move();
     Move* get_turn(int index, char player_color);
     void print();
 

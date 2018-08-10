@@ -30,6 +30,7 @@ class Board
         void                        compute_out_of_check_position           ();
         bool                        move                                    (int x_start, int y_start, int x_end, int y_end, char c);
         void                        force_move                              (int x_start, int y_start, int x_end, int y_end);
+        void                        cancel_move                             ();
         bool                        is_case_occupied                        (int l, int c);
         bool                        is_case_occupied_by_opponant            (int l, int c, char player_color);
         void                        analyze                                 (Player* current_player);
