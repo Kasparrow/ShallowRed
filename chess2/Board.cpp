@@ -7,6 +7,7 @@ Board::Board ()
     // - init players
     white = new Player(this, 'w');
     black = new Player(this, 'b');
+    _history = new MoveHistory();
     
     char co;
 
@@ -85,6 +86,9 @@ void Board::print ()
     cout << black->is_check() << endl;
     cout << endl;
     cout << "-------------------------------------------------\n";
+    _history->print();
+    cout << "-------------------------------------------------\n";
+
 }
 
 Case* Board::get_case(int l, int c) 
@@ -114,14 +118,14 @@ int Board::game()
 
             if (action == Player::ABANDON)
             {
-                return (current_player->get_color() == 'w') ? Board::BLACK_WIN : Board::WHITE_WIN;
+                return (current_player->get_color() == 'w') ? BLACK_WIN : WHITE_WIN;
             }
 
             if (action == Player::OFFER_DRAW) 
             {
                 cout << "Accept draw ? (y/n) : ";
                 accept = getchar();
-                if (accept == 'y' || accept == 'Y') return Board::DRAW;
+                if (accept == 'y' || accept == 'Y') return DRAW;
                 else cin.ignore();
             }
         } while (action != Player::MOVE);
@@ -131,14 +135,15 @@ int Board::game()
         i++;
 
         if (opponent_player->is_check_mat())
-            return (opponent_player->get_color() == 'w') ? Board::BLACK_WIN : Board::WHITE_WIN;
+            return (opponent_player->get_color() == 'w') ? BLACK_WIN : WHITE_WIN;
 
     } while (true);
 }
 
 bool Board::move(int x_start, int y_start, int x_end, int y_end, char c) 
 {
-    Piece* piece_to_move = 0;
+    Piece* piece_to_move = nullptr;
+    Piece* piece_to_take = nullptr;
 
     if (get_case(x_start, y_start)->is_occupied()) 
     {
@@ -150,15 +155,20 @@ bool Board::move(int x_start, int y_start, int x_end, int y_end, char c)
         {
             if (get_case(x_end, y_end)->is_occupied()) 
             {
+                piece_to_take = get_case(x_end, y_end)->get_occupant();
+
                 if (c == 'b')
-                    white->remove_piece(get_case(x_end, y_end)->get_occupant());
+                    white->remove_piece(piece_to_take);
                 else
-                    black->remove_piece(get_case(x_end, y_end)->get_occupant());
+                    black->remove_piece(piece_to_take);
             }
 
             get_case(x_end, y_end)->set_occupant((get_case(x_start, y_start))->get_occupant());
             (get_case(x_end, y_end)->get_occupant())->set_coordinates(x_end, y_end);
             get_case(x_start, y_start)->set_occupant(0);
+
+            Move* m = new Move(x_start, y_start, x_end, y_end, piece_to_take);
+            _history->add_move(m);
 
             return true;
         }
@@ -166,6 +176,14 @@ bool Board::move(int x_start, int y_start, int x_end, int y_end, char c)
 
     cout << "Unauthorized move\n";
     return false;
+}
+
+void Board::force_move(int x_start, int y_start, int x_end, int y_end)
+{
+  Piece* piece_to_move = nullptr;
+
+  if (!get_case(x_start, y_start)->is_occupied())
+    return;
 }
 
 void Board::compute_threats_and_authorized_moves(Player* current_player) 

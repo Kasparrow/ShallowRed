@@ -4,8 +4,6 @@
 #include "Board.h"
 #include "Functions.h"
 
-#define DEBUG true
-
 using namespace std;
 
 int main(int argc, char** argv) 

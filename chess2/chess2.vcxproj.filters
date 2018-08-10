@@ -76,7 +76,19 @@
       <Filter>Fichiers sources\Utils</Filter>
     </ClCompile>
     <ClCompile Include="ShallowRed.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Tree.cpp">
+      <Filter>Fichiers sources\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Fichiers sources\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Move.cpp">
+      <Filter>Fichiers sources\Board</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveHistory.cpp">
+      <Filter>Fichiers sources\Board</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -96,7 +108,22 @@
       <Filter>Fichiers d%27en-tête\Player</Filter>
     </ClInclude>
     <ClInclude Include="ShallowRed.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
+      <Filter>Fichiers d%27en-tête\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Fichiers d%27en-tête\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Move.h">
+      <Filter>Fichiers d%27en-tête\Board</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveHistory.h">
+      <Filter>Fichiers d%27en-tête\Board</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>Fichiers d%27en-tête\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

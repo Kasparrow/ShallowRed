@@ -1,4 +1,5 @@
 #include "Functions.h"
+#include "Defines.h"
 
 char col_int_to_char(int x) 
 {
@@ -83,13 +84,13 @@ void print_result(int res)
 {
     switch (res)
     {
-        case Board::BLACK_WIN:
+        case BLACK_WIN:
             std::cout << "0 - 1\n";
             break;
-        case Board::WHITE_WIN:
+        case WHITE_WIN:
             std::cout << "1 - 0\n";
             break;
-        case Board::DRAW:
+        case DRAW:
             std::cout << "0,5 - 0,5\n";
         default:
             break;

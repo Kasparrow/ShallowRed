@@ -7,9 +7,10 @@ Node::Node() : _childs()
   _value = 0;
 }
 
-Node::Node(double value) : _childs()
+Node::Node(double value, NodeType t) : _childs()
 {
   _value = value;
+  _type = t;
 }
 
 Node::~Node()
@@ -61,4 +62,24 @@ void Node::set_value(double v)
 double Node::get_value()
 {
   return _value;
+}
+
+bool Node::is_leaf()
+{
+  return _childs.size() == 0;
+}
+
+void Node::set_type(NodeType t)
+{
+  _type = t;
+}
+
+NodeType Node::get_type()
+{
+  return _type;
+}
+
+std::vector<Node*> Node::get_childs()
+{
+  return _childs;
 }

@@ -89,9 +89,12 @@ void Player::q_castling()
 
 int Player::play() 
 {
-    int x_start, y_start, x_end, y_end;
-    bool authorized_move = false;
-    string move;
+  int     x_start;
+  int     y_start;
+  int     x_end;
+  int     y_end;
+  bool    authorized_move = false;
+  string  move;
 
     do {
         // - ask move

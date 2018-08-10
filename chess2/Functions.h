@@ -4,8 +4,6 @@
 #include <cmath>
 #include <iostream>
 
-#include "Board.h"
-
 /*! Convert integer to column name */
 char col_int_to_char(int x);
 
