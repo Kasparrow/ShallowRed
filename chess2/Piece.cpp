@@ -358,120 +358,151 @@ void Piece::add_king_moves()
 // - threats method
 void Piece::add_top_left_diagonal_threats(int distance)
 {
-  int tmp_line = 0,
-    tmp_col = 0,
-    tmp_case = 0;
+  int   tmp_line = 0;
+  int   tmp_col = 0;
+  int   tmp_case = 0;
+  bool  occupied = false;
 
   for (int i = 1; (_line + i < 8) && (_column - i >= 0) && i <= distance; i++)
   {
     tmp_line = _line + i;
     tmp_col = _column - i;
     tmp_case = (tmp_line * 8) + tmp_col;
-
+    occupied = (*_board)(tmp_line, tmp_col)->is_occupied();
     add_threat(tmp_line, tmp_col, tmp_case);
+
+    if (occupied) break;
   }
 }
 
 void Piece::add_top_right_diagonal_threats(int distance)
 {
-  int tmp_line = 0,
-    tmp_col = 0,
-    tmp_case = 0;
+  int   tmp_line = 0;
+  int   tmp_col = 0;
+  int   tmp_case = 0;
+  bool  occupied = false;
 
   for (int i = 1; (_line + i < 8) && (_column + i <8) && i <= distance; i++)
   {
     tmp_line = _line + i;
     tmp_col = _column + i;
     tmp_case = (tmp_line * 8) + tmp_col;
+    occupied = (*_board)(tmp_line, tmp_col)->is_occupied();
 
     add_threat(tmp_line, tmp_col, tmp_case);
+
+    if (occupied) break;
   }
 }
 
 void Piece::add_bottom_left_diagonal_threats(int distance)
 {
-  int tmp_line = 0,
-    tmp_col = 0,
-    tmp_case = 0;
+  int   tmp_line = 0;
+  int   tmp_col = 0;
+  int   tmp_case = 0;
+  bool occupied = false;
 
   for (int i = 1; (_line - i >= 0) && (_column - i >= 0) && i <= distance; i++)
   {
     tmp_line = _line - i;
     tmp_col = _column - i;
     tmp_case = (tmp_line * 8) + tmp_col;
+    occupied = ((*_board)(tmp_line, tmp_col)->is_occupied());
 
     add_threat(tmp_line, tmp_col, tmp_case);
+
+    if (occupied) break;
   }
 }
 
 void Piece::add_bottom_right_diagonal_threats(int distance)
 {
-  int tmp_line = 0,
-    tmp_col = 0,
-    tmp_case = 0;
+  int   tmp_line = 0;
+  int   tmp_col = 0;
+  int   tmp_case = 0;
+  bool  occupied = false;
 
   for (int i = 1; (_line - i >= 0) && (_column + i < 8) && i <= distance; i++)
   {
     tmp_line = _line - i;
     tmp_col = _column + i;
     tmp_case = (tmp_line * 8) + tmp_col;
+    occupied = (*_board)(tmp_line, tmp_col)->is_occupied();
 
     add_threat(tmp_line, tmp_col, tmp_case);
+
+    if (occupied) break;
   }
 }
 
 void Piece::add_top_line_threats(int distance)
 {
-  int tmp_line = 0,
-    tmp_case = 0;
+  int   tmp_line = 0;
+  int   tmp_case = 0;
+  bool  occupied = false;
 
   for (int i = 1; (_line + i) < 8 && i <= distance; i++)
   {
     tmp_line = _line + i;
     tmp_case = (tmp_line * 8) + _column;
+    occupied = (*_board)(tmp_line, _column)->is_occupied();
 
     add_threat(tmp_line, _column, tmp_case);
+    
+    if (occupied) break;
   }
 }
 
 void Piece::add_right_line_threats(int distance)
 {
-  int tmp_col = 0,
-    tmp_case = 0;
+  int   tmp_col = 0;
+  int   tmp_case = 0;
+  bool  occupied = false;
 
   for (int i = 1; (_column + i) < 8 && i <= distance; i++)
   {
     tmp_col = _column + i;
     tmp_case = (_line * 8) + tmp_col;
+    (*_board)(_line, tmp_col)->is_occupied();
 
     add_threat(_line, tmp_col, tmp_case);
+
+    if (occupied) break;
   }
 }
 
 void Piece::add_left_line_threats(int distance)
 {
-  int tmp_col = 0,
-    tmp_case = 0;
+  int   tmp_col = 0;
+  int   tmp_case = 0;
+  bool  occupied = false;
 
   for (int i = 1; (_column - i) >= 0 && i <= distance; i++)
   {
     tmp_col = _column - i;
     tmp_case = (_line * 8) + tmp_col;
+    occupied = (*_board)(_line, tmp_col)->is_occupied();
 
     add_threat(_line, tmp_col, tmp_case);
+
+    if (occupied) break;
   }
 }
 
 void Piece::add_bottom_line_threats(int distance)
 {
-  int tmp_line = 0,
-    tmp_case = 0;
+  int   tmp_line = 0;
+  int   tmp_case = 0;
+  bool  occupied = false;
+
   for (int i = 1; (_line - i) >= 0 && i <= distance; i++)
   {
     tmp_line = _line - i;
     tmp_case = (tmp_line * 8) + _column;
+    occupied = (*_board)(tmp_line, _column)->is_occupied();
 
     add_threat(tmp_line, _column, tmp_case);
+
   }
 }
 
@@ -493,9 +524,7 @@ void Piece::add_knight_threats()
       if ((_line + i) < 0 || (_line + i) > 7 || (_column + j) < 0 || (_column + j) > 7)
         continue;
 
-      // - vérifie que la case n'est pas occupée par une pièce de la même couleur
-      if (!_board->is_case_occupied(_line + i, _column + j) || _board->is_case_occupied_by_opponant(_line + i, _column + j, get_color()))
-        add_threat(_line + i, _column + j, ((_line + i) * 8) + (_column + j));
+      add_threat(_line + i, _column + j, ((_line + i) * 8) + (_column + j));
     }
   }
 }

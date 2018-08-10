@@ -175,12 +175,9 @@ void Board::compute_threats_and_authorized_moves(Player* current_player)
         for (int k = 0; k<8; k++)
             get_case(j, k)->clear_threats();
 
-    // - threats are automatically calculated when we calculate players authorizedMoves
-    // - SHOULD BE MODIFIED !
-    // - CORRECT ORDER IS 
-    // - COMPUTE THREATS (BLACK AND WHITE)
-    // - COMPUTE PINNED PIECES (BLACK AND WHITE)
-    // - COMPUTE AUTHORIZED MOVES
+    white->compute_threats();
+    black->compute_threats();
+
     compute_pined_pieces();
 
     if (current_player->get_color() == 'w')
