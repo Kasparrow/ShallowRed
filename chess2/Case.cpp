@@ -18,10 +18,10 @@ Case::Case(int l, int c, Board* b, Piece *o) : _threatened_by()
     _board = b;
 }
 
-void Case::print() 
+void Case::print() const
 {
     if (_occupant == 0)
-        cout << " . ";
+        cout <<  " . ";
     else
     {
         if (_occupant->is_pinned())
@@ -29,10 +29,9 @@ void Case::print()
         else
             cout << ' ' << _occupant->get_name() << ' ';
     }
-        
 }
 
-bool Case::is_occupied() 
+bool Case::is_occupied() const
 {
     if (_occupant == 0)
         return false;
@@ -44,7 +43,7 @@ void Case::set_occupant(Piece *p)
     _occupant = p;
 }
 
-Piece* Case::get_occupant() 
+Piece* Case::get_occupant() const
 {
     return _occupant;
 }
@@ -64,52 +63,39 @@ void Case::clear_threats()
     _threatened_by.clear();
 }
 
-void Case::print_threats() 
+void Case::print_threats() const 
 {
-    list<Piece*>::iterator it;
-
-    for (it = _threatened_by.begin(); it != _threatened_by.end(); it++) 
-        cout << (*it)->get_name() << ", ";
+    for (auto piece : _threatened_by)
+        cout << piece->get_name() << ", ";
 }
 
 
-bool Case::is_threatened_by_white() {
-    list<Piece*>::iterator it;
-
-    for (it = _threatened_by.begin(); it != _threatened_by.end(); it++)
-        if ((*it)->get_color() == 'w')
+bool Case::is_threatened_by_white() const
+{
+    for (auto piece : _threatened_by)
+        if (piece->get_color() == 'w')
             return true;
 
     return false;
 }
 
-bool Case::is_threatened_by_black() {
-    list<Piece*>::iterator it;
-
-    for (it = _threatened_by.begin(); it != _threatened_by.end(); it++)
-        if ((*it)->get_color() == 'b')
+bool Case::is_threatened_by_black() const
+{
+    for (auto piece : _threatened_by)
+        if (piece->get_color() == 'b')
             return true;
 
     return false;
 }
 
-std::list<Piece*> Case::get_threats()
+std::list<Piece*> Case::get_threats() const
 {
     return _threatened_by;
 }
 
-int Case::count_color_threats(char color)
+int Case::count_color_threats(const char color)
 {
-    int counter = 0;
-    std::list<Piece*>::iterator it;
-
-    for (it = _threatened_by.begin(); it != _threatened_by.end(); it++)
-    {
-        std::cout << "threat : " << (*it)->get_name() << std::endl;
-        if ((*it)->get_color() != color)
-            counter++;
-    }
-        
-
-    return counter;
+    return std::count_if(_threatened_by.begin(), _threatened_by.end(), [color](Piece* p) { 
+        return p->get_color() == color;
+    });
 }

@@ -86,7 +86,7 @@ void Pawn::compute_threats()
     if (_color == 'w')
     {
         add_white_pawn_take_left_threats();
-        add_white_pawn_take_right_moves();
+        add_white_pawn_take_right_threats();
     }
 
     else if (_color == 'b')

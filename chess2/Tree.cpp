@@ -4,32 +4,32 @@
 
 Tree::Tree()
 {
-  _root = new Node();
-  _current = _root;
+    _root = new Node();
+    _current = _root;
 }
 
 
 Tree::~Tree()
 {
-  delete _root;
+    delete _root;
 }
 
 Node* Tree::get_root()
 {
-  return _root;
+    return _root;
 }
 
 void Tree::build(Board* b, int depth, char player_turn_color)
 {
-  // - white player
-  if (player_turn_color == 'w')
-  {
+    // - white player
+    if (player_turn_color == 'w')
+    {
 
-  }
+    }
 
-  // - black player
-  else
-  {
+    // - black player
+    else
+    {
 
-  }
+    }
 }

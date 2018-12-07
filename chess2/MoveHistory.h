@@ -11,16 +11,16 @@ class Move;
 class MoveHistory
 {
   public:
-    MoveHistory();
-    ~MoveHistory();
-    void add_move(Move *m);
-    Move* cancel_move();
-    Move* get_turn(int index, char player_color);
-    void print();
+                        MoveHistory();
+                        ~MoveHistory();
+    void                add_move(Move *m);
+    Move*               cancel_move();
+    Move*               get_turn(int index, char player_color);
+    void                print();
 
   private:
-    int _current_turn;
-    std::vector<Move*> _turns;
+    int                 _current_turn;
+    std::vector<Move*>  _turns;
 };
 
 #endif

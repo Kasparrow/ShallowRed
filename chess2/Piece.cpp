@@ -42,10 +42,12 @@ int Piece::get_coordinates()
 }
 void Piece::print_authorized_moves() 
 {
-    vector<int>::iterator it;
+    std::cout << col_int_to_char(_column + 1) << _line + 1 << " : ";
 
-    for (it = _authorized_moves.begin(); it != _authorized_moves.end(); it++)
-        cout << col_int_to_char(_column + 1) << _line + 1 << "->" << col_int_to_char((*it % 8) + 1) << (*it / 8) + 1 << ", ";
+    for (auto move : _authorized_moves)
+        std::cout << col_int_to_char((move % 8) + 1) << (move / 8) + 1 << ", ";
+
+    std::cout << std::endl;
 }
 
 void Piece::set_coordinates(int l, int c) 
@@ -61,6 +63,17 @@ bool Piece::is_authorized_move(int m)
 
 void Piece::add_authorized_move(int line, int column, int case_number)
 {
+    char name = get_name();
+
+    // if player is in check, verify that the move break the check
+    if (is_owner_check() && !is_king())
+    {
+      auto moves = _board->get_out_of_check_moves(_color);
+
+      if (std::find(moves.begin(), moves.end(), case_number) == moves.end())
+        return;
+    }
+
     _authorized_moves.push_back(case_number);   
 }
 
@@ -73,16 +86,15 @@ bool Piece::check_and_add_authorized_move(int line, int column, int case_number)
 {
     bool continue_exploration = true;
 
+    // empty case
     if (!_board->is_case_occupied(line, column))
         add_authorized_move(line, column, case_number);
 
+    // occupied case
     else
     {
         if (_board->is_case_occupied_by_opponant(line, column, get_color()))
             add_authorized_move(line, column, case_number);
-
-        else
-            _board->get_case(line, column)->add_threat(this);
 
         continue_exploration = false;
     }
@@ -94,15 +106,11 @@ bool Piece::check_and_add_authorized_move(int line, int column, int case_number)
 
 void Piece::add_top_left_diagonal_moves(int distance)
 {
-    int tmp_line = 0,
-        tmp_col = 0,
-        tmp_case = 0;
-
     for (int i = 1; (_line + i < 8) && (_column - i >= 0) && i <= distance; i++) 
     {
-        tmp_line = _line + i;
-        tmp_col = _column - i;
-        tmp_case = (tmp_line * 8) + tmp_col;
+        int tmp_line = _line + i;
+        int tmp_col = _column - i;
+        int tmp_case = (tmp_line * 8) + tmp_col;
 
         if (!check_and_add_authorized_move(tmp_line, tmp_col, tmp_case))
             break;
@@ -111,15 +119,11 @@ void Piece::add_top_left_diagonal_moves(int distance)
 
 void Piece::add_top_right_diagonal_moves(int distance)
 {
-    int tmp_line = 0,
-        tmp_col = 0,
-        tmp_case = 0;
-
     for (int i = 1; (_line + i < 8) && (_column + i <8) && i <= distance; i++) 
     {
-        tmp_line = _line + i;
-        tmp_col = _column + i;
-        tmp_case = (tmp_line * 8) + tmp_col;
+        int tmp_line = _line + i;
+        int tmp_col = _column + i;
+        int tmp_case = (tmp_line * 8) + tmp_col;
 
         if (!check_and_add_authorized_move(tmp_line, tmp_col, tmp_case))
             break;
@@ -128,15 +132,11 @@ void Piece::add_top_right_diagonal_moves(int distance)
 
 void Piece::add_bottom_left_diagonal_moves(int distance)
 {
-    int tmp_line = 0,
-        tmp_col = 0,
-        tmp_case = 0;
-
     for (int i = 1; (_line - i >= 0) && (_column - i >= 0) && i <= distance; i++)  
     {
-        tmp_line = _line - i;
-        tmp_col = _column - i;
-        tmp_case = (tmp_line * 8) + tmp_col;
+        int tmp_line = _line - i;
+        int tmp_col = _column - i;
+        int tmp_case = (tmp_line * 8) + tmp_col;
 
         if (!check_and_add_authorized_move(tmp_line, tmp_col, tmp_case))
             break;
@@ -145,15 +145,11 @@ void Piece::add_bottom_left_diagonal_moves(int distance)
 
 void Piece::add_bottom_right_diagonal_moves(int distance)
 {
-    int tmp_line = 0,
-        tmp_col = 0,
-        tmp_case = 0;
-
     for (int i = 1; (_line - i >= 0) && (_column + i < 8) && i <= distance; i++) 
     {
-        tmp_line = _line - i;
-        tmp_col = _column + i;
-        tmp_case = (tmp_line * 8) + tmp_col;
+        int tmp_line = _line - i;
+        int tmp_col = _column + i;
+        int tmp_case = (tmp_line * 8) + tmp_col;
 
         if (!check_and_add_authorized_move(tmp_line, tmp_col, tmp_case))
             break;
@@ -162,13 +158,10 @@ void Piece::add_bottom_right_diagonal_moves(int distance)
 
 void Piece::add_top_line_moves(int distance)
 {
-    int tmp_line = 0,
-        tmp_case = 0;
-
     for (int i = 1; (_line + i) < 8 && i <= distance; i++) 
     {
-        tmp_line = _line + i;
-        tmp_case = (tmp_line * 8) + _column;
+        int tmp_line = _line + i;
+        int tmp_case = (tmp_line * 8) + _column;
 
         if (!check_and_add_authorized_move(tmp_line, _column, tmp_case))
             break;
@@ -177,13 +170,10 @@ void Piece::add_top_line_moves(int distance)
 
 void Piece::add_right_line_moves(int distance)
 {
-    int tmp_col = 0,
-        tmp_case = 0;
-
     for (int i = 1; (_column + i) < 8 && i <= distance; i++)
     {
-        tmp_col = _column + i;
-        tmp_case = (_line * 8) + tmp_col;
+        int tmp_col = _column + i;
+        int tmp_case = (_line * 8) + tmp_col;
         
         if (!check_and_add_authorized_move(_line, tmp_col, tmp_case))
             break;
@@ -192,13 +182,10 @@ void Piece::add_right_line_moves(int distance)
 
 void Piece::add_left_line_moves(int distance)
 {
-    int tmp_col = 0,
-        tmp_case = 0;
-
     for (int i = 1; (_column - i) >= 0 && i <= distance; i++) 
     {
-        tmp_col = _column - i;
-        tmp_case = (_line * 8) + tmp_col;
+        int tmp_col = _column - i;
+        int tmp_case = (_line * 8) + tmp_col;
         
         if (!check_and_add_authorized_move(_line, tmp_col, tmp_case))
             break;
@@ -207,12 +194,10 @@ void Piece::add_left_line_moves(int distance)
 
 void Piece::add_bottom_line_moves(int distance)
 {
-    int tmp_line = 0,
-        tmp_case = 0;
     for (int i = 1; (_line - i) >= 0 && i <= distance; i++) 
     {
-        tmp_line = _line - i;
-        tmp_case = (tmp_line * 8) + _column;
+        int tmp_line = _line - i;
+        int tmp_case = (tmp_line * 8) + _column;
 
         if (!check_and_add_authorized_move(tmp_line, _column, tmp_case))
             break;
@@ -223,26 +208,23 @@ void Piece::add_knight_moves()
 {
     for (int i = -2; i < 3; i++)
     {
-        // - le cavalier ne se déplace pas en ligne
+        // - knight doesn't move in line
         if (i == 0)
             continue;
 
         for (int j = -2; j < 3; j++)
         {
-            // - le cavalier ne se déplace pas en colonne et la somme (nouvelle colonne + nouvelle ligne) n'est jamais paire
+            // - knight doesn't move in col aand new_col + new_line is not event
             if (j == 0 || (i + j) % 2 == 0)
                 continue;
 
-            // - limite les déplacements dans l'échiquier
+            // - move must be inside the board
             if ((_line + i) < 0 || (_line + i) > 7 || (_column + j) < 0 || (_column + j) > 7)
                 continue;
 
-            // - vérifie que la case n'est pas occupée par une pièce de la même couleur
+            // - check if destination case in not occupied by ally piece
             if (!_board->is_case_occupied(_line + i, _column + j) || _board->is_case_occupied_by_opponant(_line + i, _column + j, get_color())) 
-            {
-                _authorized_moves.push_back((_line + i) * 8 + (_column + j));
-                _board->get_case((_line + i), (_column + j))->add_threat(this);
-            }
+                check_and_add_authorized_move(_line + i, _column + j, (_line + i) * 8 + (_column + j));
         }
     }
 }
@@ -251,106 +233,72 @@ void Piece::add_white_pawn_forward_moves()
 {
     if (_line + 1 < 8 && !(_board->get_case(_line + 1, _column))->is_occupied()) 
     {
-        _authorized_moves.push_back((_line + 1) * 8 + _column);
+        check_and_add_authorized_move(_line + 1, _column, (_line + 1) * 8 + _column);
+        
         if (_line == 1 && !(_board->get_case(_line + 2, _column))->is_occupied())
-            _authorized_moves.push_back((_line + 2) * 8 + _column);
+            check_and_add_authorized_move(_line + 2, _column, (_line + 2) * 8 + _column);
     }
 }
 
 void Piece::add_white_pawn_take_right_moves()
 {
     if ((_line + 1 < 8 && _column + 1 <8) && _board->get_case(_line + 1, _column + 1)->is_occupied() && ((_board->get_case(_line + 1, _column + 1))->get_occupant())->get_color() != 'w') 
-    {
-        _authorized_moves.push_back((_line + 1) * 8 + (_column + 1));
-        _board->get_case((_line + 1), (_column + 1))->add_threat(this);
-    }
+        check_and_add_authorized_move(_line + 1, _column + 1, (_line + 1) * 8 + _column + 1);
 }
 
 void Piece::add_white_pawn_take_left_moves()
 {
     if ((_line + 1 < 8 && _column - 1 >= 0) && _board->get_case(_line + 1, _column - 1)->is_occupied() && ((_board->get_case(_line + 1, _column - 1))->get_occupant())->get_color() != 'w') 
-    {
-        _authorized_moves.push_back((_line + 1) * 8 + (_column - 1));
-        _board->get_case((_line + 1), (_column - 1))->add_threat(this);
-    }
+        check_and_add_authorized_move(_line + 1, _column - 1, (_line + 1) * 8 + _column - 1);
 }
 
 void Piece::add_black_pawn_forward_moves()
 {
     if (_line - 1 >= 0 && !(_board->get_case(_line - 1, _column))->is_occupied())
     {
-        _authorized_moves.push_back((_line - 1) * 8 + _column);
+        check_and_add_authorized_move(_line - 1, _column, (_line - 1) * 8 + _column);
+
         if (_line == 6 && !(_board->get_case(_line - 2, _column))->is_occupied())
-            _authorized_moves.push_back((_line - 2) * 8 + _column);
+            check_and_add_authorized_move(_line - 2, _column, (_line - 2) * 8 + _column);
     }
 }
 
 void Piece::add_black_pawn_take_right_moves()
 {
-    if ((_line - 1 >= 0 && _column + 1 < 8) && _board->get_case(_line - 1, _column + 1)->is_occupied() && ((_board->get_case(_line - 1, _column + 1))->get_occupant())->get_color() != 'b') {
-        _authorized_moves.push_back((_line - 1) * 8 + (_column + 1));
-        _board->get_case((_line - 1), (_column + 1))->add_threat(this);
-    }
+    if ((_line - 1 >= 0 && _column + 1 < 8) && _board->get_case(_line - 1, _column + 1)->is_occupied() && ((_board->get_case(_line - 1, _column + 1))->get_occupant())->get_color() != 'b') 
+        check_and_add_authorized_move(_line - 1, _column + 1, (_line - 1) * 8 + _column + 1);
 }
 
 void Piece::add_black_pawn_take_left_moves()
 {
     if ((_line - 1 >= 0 && _column - 1 >= 0) && _board->get_case(_line - 1, _column - 1)->is_occupied() && ((_board->get_case(_line - 1, _column - 1))->get_occupant())->get_color() != 'b')
-    {
-        _authorized_moves.push_back((_line - 1) * 8 + (_column - 1));
-        _board->get_case((_line - 1), (_column - 1))->add_threat(this);
-    }
+        check_and_add_authorized_move(_line - 1, _column - 1, (_line - 1) * 8 + _column - 1);
 }
 
 void Piece::add_king_moves()
 {
-    int     tmp_line = 0;
-    int     tmp_col = 0;
-    int     tmp_case = 0;
-    bool    case_exist;
-
-    if (get_color() == 'w')
+    for (int i = -1; i <= 1; i++)
     {
-        for (int i = -1; i <= 1; i++)
+        for (int j = -1; j <= 1; j++)
         {
-            for (int j = -1; j <= 1; j++)
-            {
-                if (i == 0 && j == 0)
-                    continue;
+            // - current position of the king
+            if (i == 0 && j == 0)
+                continue;
 
-                tmp_line = _line + i;
-                tmp_col = _column + j;
-                tmp_case = (tmp_line * 8) + tmp_col;
-                case_exist = (tmp_line >= 0 && tmp_line < 8 && tmp_col >= 0 && tmp_col < 8);
+            int tmp_line = _line + i;
+            int tmp_col = _column + j;
+            int tmp_case = (tmp_line * 8) + tmp_col;
 
-                if (case_exist && !(_board->get_case(tmp_line, tmp_col))->is_threatened_by_black())
-                {
-                    cout << col_int_to_char(tmp_col + 1) << " " << (tmp_line + 1) << " is not threatened by blacks\n";
-                    check_and_add_authorized_move(tmp_line, tmp_col, tmp_case);
-                }
-            }
-        }
-    }
+            // ignore position outside of the board
+            if (tmp_line < 0 || tmp_line > 7 || tmp_col < 0 || tmp_col > 7)
+                continue;
 
-    else
-    {
-        for (int i = -1; i <= 1; i++)
-        {
-            for (int j = -1; j <= 1; j++)
-            {
-                if (i == 0 && j == 0)
-                    continue;
-                else
-                {
-                    tmp_line = _line + i;
-                    tmp_col = _column + j;
-                    tmp_case = (tmp_line * 8) + tmp_col;
-                    case_exist = (tmp_line >= 0 && tmp_line < 8 && tmp_col >= 0 && tmp_col < 8);
+            auto current_case = _board->get_case(tmp_line, tmp_col);
 
-                    if (case_exist && !_board->get_case(tmp_line, tmp_col)->is_threatened_by_white())
-                        check_and_add_authorized_move(tmp_line, tmp_col, tmp_case);
-                }
-            }
+            bool is_threatened = get_color() == 'w' ? current_case->is_threatened_by_black() : current_case->is_threatened_by_white();
+
+            if (!is_threatened)
+                check_and_add_authorized_move(tmp_line, tmp_col, tmp_case);
         }
     }
 }
@@ -358,226 +306,185 @@ void Piece::add_king_moves()
 // - threats method
 void Piece::add_top_left_diagonal_threats(int distance)
 {
-  int   tmp_line = 0;
-  int   tmp_col = 0;
-  int   tmp_case = 0;
-  bool  occupied = false;
+    for (int i = 1; (_line + i < 8) && (_column - i >= 0) && i <= distance; i++)
+    {
+        int  tmp_line = _line + i;
+        int tmp_col = _column - i;
+        int tmp_case = (tmp_line * 8) + tmp_col;
+        bool occupied = (*_board)(tmp_line, tmp_col)->is_occupied();
+        
+        add_threat(tmp_line, tmp_col, tmp_case);
 
-  for (int i = 1; (_line + i < 8) && (_column - i >= 0) && i <= distance; i++)
-  {
-    tmp_line = _line + i;
-    tmp_col = _column - i;
-    tmp_case = (tmp_line * 8) + tmp_col;
-    occupied = (*_board)(tmp_line, tmp_col)->is_occupied();
-    add_threat(tmp_line, tmp_col, tmp_case);
-
-    if (occupied) break;
-  }
+        if (occupied) break;
+    }
 }
 
 void Piece::add_top_right_diagonal_threats(int distance)
 {
-  int   tmp_line = 0;
-  int   tmp_col = 0;
-  int   tmp_case = 0;
-  bool  occupied = false;
+    for (int i = 1; (_line + i < 8) && (_column + i <8) && i <= distance; i++)
+    {
+        int tmp_line = _line + i;
+        int tmp_col = _column + i;
+        int tmp_case = (tmp_line * 8) + tmp_col;
+        bool occupied = (*_board)(tmp_line, tmp_col)->is_occupied();
 
-  for (int i = 1; (_line + i < 8) && (_column + i <8) && i <= distance; i++)
-  {
-    tmp_line = _line + i;
-    tmp_col = _column + i;
-    tmp_case = (tmp_line * 8) + tmp_col;
-    occupied = (*_board)(tmp_line, tmp_col)->is_occupied();
+        add_threat(tmp_line, tmp_col, tmp_case);
 
-    add_threat(tmp_line, tmp_col, tmp_case);
-
-    if (occupied) break;
-  }
+        if (occupied) break;
+    }
 }
 
 void Piece::add_bottom_left_diagonal_threats(int distance)
 {
-  int   tmp_line = 0;
-  int   tmp_col = 0;
-  int   tmp_case = 0;
-  bool occupied = false;
+    for (int i = 1; (_line - i >= 0) && (_column - i >= 0) && i <= distance; i++)
+    {
+        int tmp_line = _line - i;
+        int tmp_col = _column - i;
+        int tmp_case = (tmp_line * 8) + tmp_col;
+        bool occupied = ((*_board)(tmp_line, tmp_col)->is_occupied());
 
-  for (int i = 1; (_line - i >= 0) && (_column - i >= 0) && i <= distance; i++)
-  {
-    tmp_line = _line - i;
-    tmp_col = _column - i;
-    tmp_case = (tmp_line * 8) + tmp_col;
-    occupied = ((*_board)(tmp_line, tmp_col)->is_occupied());
+        add_threat(tmp_line, tmp_col, tmp_case);
 
-    add_threat(tmp_line, tmp_col, tmp_case);
-
-    if (occupied) break;
-  }
+        if (occupied) break;
+    }
 }
 
 void Piece::add_bottom_right_diagonal_threats(int distance)
 {
-  int   tmp_line = 0;
-  int   tmp_col = 0;
-  int   tmp_case = 0;
-  bool  occupied = false;
+    for (int i = 1; (_line - i >= 0) && (_column + i < 8) && i <= distance; i++)
+    {
+        int tmp_line = _line - i;
+        int tmp_col = _column + i;
+        int tmp_case = (tmp_line * 8) + tmp_col;
+        bool occupied = (*_board)(tmp_line, tmp_col)->is_occupied();
 
-  for (int i = 1; (_line - i >= 0) && (_column + i < 8) && i <= distance; i++)
-  {
-    tmp_line = _line - i;
-    tmp_col = _column + i;
-    tmp_case = (tmp_line * 8) + tmp_col;
-    occupied = (*_board)(tmp_line, tmp_col)->is_occupied();
+        add_threat(tmp_line, tmp_col, tmp_case);
 
-    add_threat(tmp_line, tmp_col, tmp_case);
-
-    if (occupied) break;
-  }
+        if (occupied) break;
+    }
 }
 
 void Piece::add_top_line_threats(int distance)
 {
-  int   tmp_line = 0;
-  int   tmp_case = 0;
-  bool  occupied = false;
+    for (int i = 1; (_line + i) < 8 && i <= distance; i++)
+    {
+        int tmp_line = _line + i;
+        int tmp_case = (tmp_line * 8) + _column;
+        bool occupied = (*_board)(tmp_line, _column)->is_occupied();
 
-  for (int i = 1; (_line + i) < 8 && i <= distance; i++)
-  {
-    tmp_line = _line + i;
-    tmp_case = (tmp_line * 8) + _column;
-    occupied = (*_board)(tmp_line, _column)->is_occupied();
-
-    add_threat(tmp_line, _column, tmp_case);
+        add_threat(tmp_line, _column, tmp_case);
     
-    if (occupied) break;
-  }
+        if (occupied) break;
+    }
 }
 
 void Piece::add_right_line_threats(int distance)
 {
-  int   tmp_col = 0;
-  int   tmp_case = 0;
-  bool  occupied = false;
+    for (int i = 1; (_column + i) < 8 && i <= distance; i++)
+    {
+        int tmp_col = _column + i;
+        int tmp_case = (_line * 8) + tmp_col;
+        bool occupied = (*_board)(_line, tmp_col)->is_occupied();
 
-  for (int i = 1; (_column + i) < 8 && i <= distance; i++)
-  {
-    tmp_col = _column + i;
-    tmp_case = (_line * 8) + tmp_col;
-    (*_board)(_line, tmp_col)->is_occupied();
+        add_threat(_line, tmp_col, tmp_case);
 
-    add_threat(_line, tmp_col, tmp_case);
-
-    if (occupied) break;
-  }
+        if (occupied) break;
+    }
 }
 
 void Piece::add_left_line_threats(int distance)
 {
-  int   tmp_col = 0;
-  int   tmp_case = 0;
-  bool  occupied = false;
+    for (int i = 1; (_column - i) >= 0 && i <= distance; i++)
+    {
+        int tmp_col = _column - i;
+        int tmp_case = (_line * 8) + tmp_col;
+        bool occupied = (*_board)(_line, tmp_col)->is_occupied();
 
-  for (int i = 1; (_column - i) >= 0 && i <= distance; i++)
-  {
-    tmp_col = _column - i;
-    tmp_case = (_line * 8) + tmp_col;
-    occupied = (*_board)(_line, tmp_col)->is_occupied();
+        add_threat(_line, tmp_col, tmp_case);
 
-    add_threat(_line, tmp_col, tmp_case);
-
-    if (occupied) break;
-  }
+        if (occupied) break;
+    }
 }
 
 void Piece::add_bottom_line_threats(int distance)
 {
-  int   tmp_line = 0;
-  int   tmp_case = 0;
-  bool  occupied = false;
+    for (int i = 1; (_line - i) >= 0 && i <= distance; i++)
+    {
+        int tmp_line = _line - i;
+        int tmp_case = (tmp_line * 8) + _column;
+        bool occupied = (*_board)(tmp_line, _column)->is_occupied();
 
-  for (int i = 1; (_line - i) >= 0 && i <= distance; i++)
-  {
-    tmp_line = _line - i;
-    tmp_case = (tmp_line * 8) + _column;
-    occupied = (*_board)(tmp_line, _column)->is_occupied();
+        add_threat(tmp_line, _column, tmp_case);
 
-    add_threat(tmp_line, _column, tmp_case);
-
-  }
+        if (occupied) break;
+    }
 }
 
 void Piece::add_knight_threats()
 {
-  for (int i = -2; i < 3; i++)
-  {
-    // - le cavalier ne se déplace pas en ligne
-    if (i == 0)
-      continue;
-
-    for (int j = -2; j < 3; j++)
+    for (int i = -2; i < 3; i++)
     {
-      // - le cavalier ne se déplace pas en colonne et la somme (nouvelle colonne + nouvelle ligne) n'est jamais paire
-      if (j == 0 || (i + j) % 2 == 0)
-        continue;
+        // - knight doesn't move in line
+        if (i == 0)
+            continue;
 
-      // - limite les déplacements dans l'échiquier
-      if ((_line + i) < 0 || (_line + i) > 7 || (_column + j) < 0 || (_column + j) > 7)
-        continue;
+        for (int j = -2; j < 3; j++)
+        {
+            // - knight doesn't move in col aand new_col + new_line is not event
+            if (j == 0 || (i + j) % 2 == 0)
+                continue;
 
-      add_threat(_line + i, _column + j, ((_line + i) * 8) + (_column + j));
+            // - move must be inside the board
+            if ((_line + i) < 0 || (_line + i) > 7 || (_column + j) < 0 || (_column + j) > 7)
+                continue;
+
+            add_threat(_line + i, _column + j, ((_line + i) * 8) + (_column + j));
+        }
     }
-  }
 }
 
 void Piece::add_white_pawn_take_right_threats()
 {
-  if ((_line + 1 < 8 && _column + 1 <8) && _board->get_case(_line + 1, _column + 1)->is_occupied() && ((_board->get_case(_line + 1, _column + 1))->get_occupant())->get_color() != 'w')
-    _board->get_case((_line + 1), (_column + 1))->add_threat(this);
+    if (_line + 1 < 8 && _column + 1 <8)
+        _board->get_case((_line + 1), (_column + 1))->add_threat(this);
 }
 
 void Piece::add_white_pawn_take_left_threats()
 {
-  if ((_line + 1 < 8 && _column - 1 >= 0) && _board->get_case(_line + 1, _column - 1)->is_occupied() && ((_board->get_case(_line + 1, _column - 1))->get_occupant())->get_color() != 'w')
-    _board->get_case((_line + 1), (_column - 1))->add_threat(this);
+     if (_line + 1 < 8 && _column - 1 >= 0)
+        _board->get_case((_line + 1), (_column - 1))->add_threat(this);
 }
 
 void Piece::add_black_pawn_take_right_threats()
 {
-  if ((_line - 1 >= 0 && _column + 1 < 8) && _board->get_case(_line - 1, _column + 1)->is_occupied() && ((_board->get_case(_line - 1, _column + 1))->get_occupant())->get_color() != 'b') {
-    _authorized_moves.push_back((_line - 1) * 8 + (_column + 1));
-    _board->get_case((_line - 1), (_column + 1))->add_threat(this);
-  }
+    if (_line - 1 >= 0 && _column + 1 < 8) 
+        _board->get_case((_line - 1), (_column + 1))->add_threat(this);
 }
 
 void Piece::add_black_pawn_take_left_threats()
 {
-  if ((_line - 1 >= 0 && _column - 1 >= 0) && _board->get_case(_line - 1, _column - 1)->is_occupied() && ((_board->get_case(_line - 1, _column - 1))->get_occupant())->get_color() != 'b')
-    _board->get_case((_line - 1), (_column - 1))->add_threat(this);
+    if (_line - 1 >= 0 && _column - 1 >= 0)
+        _board->get_case((_line - 1), (_column - 1))->add_threat(this);
 }
 
 void Piece::add_king_threats()
 {
-  int     tmp_line = 0;
-  int     tmp_col = 0;
-  int     tmp_case = 0;
-  bool    case_exist;
-
-  for (int i = -1; i <= 1; i++)
-  {
-    for (int j = -1; j <= 1; j++)
+    for (int i = -1; i <= 1; i++)
     {
-      if (i == 0 && j == 0)
-        continue;
+        for (int j = -1; j <= 1; j++)
+        {
+            if (i == 0 && j == 0)
+                continue;
 
-      tmp_line = _line + i;
-      tmp_col = _column + j;
-      tmp_case = (tmp_line * 8) + tmp_col;
-      case_exist = (tmp_line >= 0 && tmp_line < 8 && tmp_col >= 0 && tmp_col < 8);
+            int tmp_line = _line + i;
+            int tmp_col = _column + j;
+            int tmp_case = (tmp_line * 8) + tmp_col;
+            bool case_exist = (tmp_line >= 0 && tmp_line < 8 && tmp_col >= 0 && tmp_col < 8);
 
-      if (case_exist)
-        add_threat(tmp_line, tmp_col, tmp_case);
+            if (case_exist)
+                add_threat(tmp_line, tmp_col, tmp_case);
+        }
     }
-  }
 }
 
 // end threats method
@@ -603,4 +510,41 @@ std::vector<int> Piece::get_authorized_moves()
 Case* Piece::get_case()
 {
     return _board->get_case(_line, _column);
+}
+
+bool Piece::is_owner_check() const
+{
+  auto player = (_color == 'w') ? _board->get_white() : _board->get_black();
+
+  return player->is_check();
+}
+
+bool Piece::is_king()
+{
+  return get_name() == 'K' || get_name() == 'k';
+}
+
+bool Piece::is_queen()
+{
+  return get_name() == 'Q' || get_name() == 'q';
+}
+
+bool Piece::is_rook()
+{
+  return get_name() == 'R' || get_name() == 'r';
+}
+
+bool Piece::is_bishop()
+{
+  return get_name() == 'B' || get_name() == 'b';
+}
+
+bool Piece::is_knight()
+{
+  return get_name() == 'N' || get_name() == 'n';
+}
+
+bool Piece::is_pawn()
+{
+  return get_name() == 'P' || get_name() == 'p';
 }

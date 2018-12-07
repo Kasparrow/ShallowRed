@@ -35,16 +35,16 @@ void Rook::compute_authorized_moves()
 
         switch (dir)
         {
-        case 0:
-            add_right_line_moves(8);
-            add_left_line_moves(8);
-            break;
-        case 1:
-            add_top_line_moves(8);
-            add_bottom_line_moves(8);
-            break;
-        default:
-            break;
+            case 0:
+                add_right_line_moves(8);
+                add_left_line_moves(8);
+                break;
+            case 1:
+                add_top_line_moves(8);
+                add_bottom_line_moves(8);
+                break;
+            default:
+                break;
         }
     }
 

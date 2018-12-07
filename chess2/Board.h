@@ -1,17 +1,14 @@
 #ifndef BOARD_H_INCLUDED
 #define BOARD_H_INCLUDED
 
-#include <iostream>
-#include <sstream>
-#include <exception>
-#include <list>
-#include <stdio.h>
 #include <array>
 
 #include "Defines.h"
 #include "Case.h"
 #include "Player.h"
 #include "MoveHistory.h"
+
+#define DEBUG true
 
 class Case;
 class Player;
@@ -23,6 +20,7 @@ class Board
                                     Board                                   ();
                                     ~Board                                  ();
         void                        print                                   ();
+        void                        clear_threats                           ();
         Case*                       get_case                                (int l, int c);
         int                         game                                    ();
         void                        compute_pined_pieces                    ();
@@ -35,14 +33,17 @@ class Board
         bool                        is_case_occupied_by_opponant            (int l, int c, char player_color);
         void                        analyze                                 (Player* current_player);
         void                        remove_pined_flags                      ();
-        Player*                     get_white                               ();
-        Player*                     get_black                               ();
+        Player*                     get_white                               () const;
+        Player*                     get_black                               () const;
+        Piece*                      get_black_king                          () const;
+        Piece*                      get_white_king                          () const;
+        MoveHistory*                get_history                             () const;
+        std::vector<int>            get_out_of_check_moves                  (char player_color) const;
+
         Case*                       operator()                              (unsigned line, unsigned column);
-        Piece*                      get_black_king                          ();
-        Piece*                      get_white_king                          ();
 
     private:
-        std::array<Case*, 64>       cases;
+        std::array<Case*, 64>       _cases;
         Player*                     white;
         Player*                     black;
         MoveHistory*                _history;

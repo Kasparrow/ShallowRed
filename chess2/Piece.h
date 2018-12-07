@@ -29,6 +29,7 @@ class Piece
         bool                    is_authorized_move                      (int m);
         void                    set_pinned                              (bool p);
         void                    set_pinned                              (Piece* p)    { _is_pinned = true; _pinned_by = p; }
+        bool                    is_owner_check                          () const;
         
         // - authorized moves methods
         void                    add_top_left_diagonal_moves             (int distance);
@@ -67,7 +68,12 @@ class Piece
         void                    add_threat                              (int line, int column, int case_number);
         bool                    check_and_add_authorized_move           (int line, int column, int case_number);
         bool                    is_pinned                               ();
-        
+        bool                    is_king                                 ();
+        bool                    is_queen                                ();
+        bool                    is_rook                                 ();
+        bool                    is_bishop                               ();
+        bool                    is_knight                               ();
+        bool                    is_pawn                                 ();
         
         // - position methods
         Case*                   get_case                                ();

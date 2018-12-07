@@ -14,17 +14,17 @@ class Case
     public:
                                 Case                        ();
                                 Case                        (int l, int c, Board *b, Piece *occupant);
-        void                    print                       ();
-        bool                    is_occupied                 ();
-        Piece*                  get_occupant                ();
+        void                    print                       () const;
+        bool                    is_occupied                 () const;
+        Piece*                  get_occupant                () const;
         void                    set_occupant                (Piece* p);
         void                    add_threat                  (Piece* p);
         void                    remove_threat               (Piece* p);
         void                    clear_threats               ();
-        void                    print_threats               ();
-        bool                    is_threatened_by_black      ();
-        bool                    is_threatened_by_white      ();
-        std::list<Piece*>       get_threats                 ();
+        void                    print_threats               () const;
+        bool                    is_threatened_by_black      () const;
+        bool                    is_threatened_by_white      () const;
+        std::list<Piece*>       get_threats                 () const;
         int                     count_color_threats         (char opponant_color);
 
     private:

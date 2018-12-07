@@ -47,8 +47,8 @@ void Bishop::compute_authorized_moves()
 }
 void Bishop::compute_threats()
 {
-    add_top_left_diagonal_moves(8);
-    add_top_right_diagonal_moves(8);
-    add_bottom_right_diagonal_moves(8);
-    add_bottom_left_diagonal_moves(8);
+    add_top_left_diagonal_threats(8);
+    add_top_right_diagonal_threats(8);
+    add_bottom_right_diagonal_threats(8);
+    add_bottom_left_diagonal_threats(8);
 }
