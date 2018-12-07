@@ -106,7 +106,7 @@ class King : public Piece
         void                    compute_out_of_check_cases              ();
 
     private:
-        bool                    moved;
+        bool                    _moved;
 };
 
 class Queen : public Piece 
@@ -133,7 +133,7 @@ class Rook : public Piece
         void                    compute_threats                         ();
 
     private:
-        bool                    moved;
+        bool                    _moved;
 };
 
 class Knight : public Piece 

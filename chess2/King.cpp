@@ -5,17 +5,17 @@ King::King() : Piece() {}
 
 King::King(int l, int c, Board *b, char co, double v) : Piece(l, c, b, co, v) 
 {
-    moved = false;
+    _moved = false;
 }
 
 void King::set_moved(bool m) 
 {
-    moved = m;
+    _moved = m;
 }
 
 bool King::has_moved() 
 {
-    return moved;
+    return _moved;
 }
 
 bool King::is_in_check() 

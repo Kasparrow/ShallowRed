@@ -44,8 +44,8 @@ class Board
 
     private:
         std::array<Case*, 64>       _cases;
-        Player*                     white;
-        Player*                     black;
+        Player*                     _white;
+        Player*                     _black;
         MoveHistory*                _history;
 };
 

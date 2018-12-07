@@ -17,12 +17,12 @@ char Rook::get_name()
 
 bool Rook::has_moved() 
 {
-    return moved;
+    return _moved;
 }
 
 void Rook::set_moved(bool m) 
 {
-    moved = m;
+    _moved = m;
 }
 
 void Rook::compute_authorized_moves() 

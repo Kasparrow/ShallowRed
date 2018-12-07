@@ -7,9 +7,9 @@ Board::Board ()
 {
     // - init players
     //white = new Player(this, 'w');
-  white = new ShallowRed(this, 'w');
+  _white = new ShallowRed(this, 'w');
   //black = new Player(this, 'b');
-  black = new ShallowRed(this, 'b');
+  _black = new ShallowRed(this, 'b');
 
 
   // init history
@@ -51,10 +51,10 @@ Board::Board ()
 
             // - init player pieces list
             if (i > 5)
-                black->add_piece(_cases[(i * 8) + j]->get_occupant());
+                _black->add_piece(_cases[(i * 8) + j]->get_occupant());
 
             else if (i < 2)
-                white->add_piece(_cases[(i * 8) + j]->get_occupant());
+                _white->add_piece(_cases[(i * 8) + j]->get_occupant());
         }
     }
 }
@@ -64,8 +64,8 @@ Board::~Board ()
     for (auto i = 0; i < 64; i++)
         delete _cases[i];
 
-    delete white;
-    delete black;
+    delete _white;
+    delete _black;
 }
 
 void Board::print () 
@@ -88,14 +88,14 @@ void Board::print ()
     if (DEBUG)
     {
         cout << "White is check : ";
-        cout << white->is_check() << endl;
+        cout << _white->is_check() << endl;
         cout << "\nBlack is check : ";
-        cout << black->is_check() << endl;
+        cout << _black->is_check() << endl;
         cout << endl;
         cout << "White authorize moves : ";
-        white->print_all_authorized_moves();
+        _white->print_all_authorized_moves();
         cout << "Black authorized moves : ";
-        black->print_all_authorized_moves();
+        _black->print_all_authorized_moves();
     }
     cout << "-------------------------------------------------\n";
     _history->print();
@@ -116,8 +116,8 @@ int Board::game()
     {
         int action;
 
-        auto current_player = ((i % 2 == 0) ? white : black);
-        auto opponent_player = ((i % 2 == 0) ? black : white);
+        auto current_player = ((i % 2 == 0) ? _white : _black);
+        auto opponent_player = ((i % 2 == 0) ? _black : _white);
 
         compute_threats_and_authorized_moves(current_player);
 
@@ -178,9 +178,9 @@ bool Board::move(const int x_start, const int y_start, const int x_end, const in
         piece_to_take = get_case(x_end, y_end)->get_occupant();
 
         if (c == 'b')
-            white->remove_piece(piece_to_take);
+            _white->remove_piece(piece_to_take);
         else
-            black->remove_piece(piece_to_take);
+            _black->remove_piece(piece_to_take);
     }
 
     // - move piece to it's new position and remove it from last position
@@ -221,10 +221,10 @@ void Board::cancel_move()
             get_case(last_move->get_x_end(), last_move->get_y_end())->set_occupant(take);
 
             if (take->get_color() == 'w')
-                white->add_piece(take);
+                _white->add_piece(take);
 
             else
-                black->add_piece(take);
+                _black->add_piece(take);
         }
     }
 
@@ -263,15 +263,15 @@ void Board::compute_threats_and_authorized_moves(Player* current_player)
 
     // compute for both player first because authorized moves
     // depends of it
-    white->compute_threats();
-    black->compute_threats();
+    _white->compute_threats();
+    _black->compute_threats();
 
     // once we have threats, set pinned flag on all pieces
     compute_pined_pieces();
 
     // finally, compute authorized moves for both players
-    white->compute_authorized_moves();
-    black->compute_authorized_moves();
+    _white->compute_authorized_moves();
+    _black->compute_authorized_moves();
 }
 
 void Board::clear_threats()
@@ -320,8 +320,8 @@ bool Board::is_case_occupied_by_opponant(const int l, const int c, const char pl
 
 void Board::remove_pined_flags()
 {
-    auto white_pieces = white->get_list_pieces();
-    auto black_pieces = black->get_list_pieces();
+    auto white_pieces = _white->get_list_pieces();
+    auto black_pieces = _black->get_list_pieces();
 
     for (auto it : white_pieces)
         it->set_pinned(false);
@@ -340,12 +340,12 @@ void Board::analyze(Player* current_player)
 
 Player* Board::get_white() const
 {
-    return white;
+    return _white;
 }
 
 Player* Board::get_black() const
 {
-    return black;
+    return _black;
 }
 
 Case* Board::operator() (unsigned const line, unsigned const column)
@@ -355,12 +355,12 @@ Case* Board::operator() (unsigned const line, unsigned const column)
 
 Piece* Board::get_black_king() const
 {
-    return black->get_king();
+    return _black->get_king();
 }
 
 Piece* Board::get_white_king() const
 {
-    return white->get_king();
+    return _white->get_king();
 }
 
 MoveHistory* Board::get_history() const
