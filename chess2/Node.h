@@ -1,8 +1,7 @@
-#pragma once
+#ifndef _NODE_H_INCLUDED_
+#define _NODE_H_INCLUDED_
 
 #include <vector>
-#include <algorithm>
-#include <limits>
 
 enum NodeType { MIN, MAX };
 
@@ -30,3 +29,4 @@ class Node
     NodeType            _type;
 };
 
+#endif

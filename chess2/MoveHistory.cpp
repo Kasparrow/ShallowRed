@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "MoveHistory.h"
 
 MoveHistory::MoveHistory() : _turns()

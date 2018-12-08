@@ -1,7 +1,5 @@
 #include "Tree.h"
 
-
-
 Tree::Tree()
 {
     _root = new Node();

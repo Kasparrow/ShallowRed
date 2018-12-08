@@ -4,12 +4,12 @@
 
 class ShallowRed : public Player
 {
-  public:
-            ShallowRed  ();
-            ShallowRed  (Board *b, char c);
-            ~ShallowRed ();
-    int     play        ();
-    int     dumbIA      ();
-    int     randomIA    ();
-    double  alphabeta   (Node *n, double a, double b);
+    public:
+                ShallowRed      ();
+                ShallowRed      (Board *b, char c);
+                ~ShallowRed     ();
+        int     play            () override;
+        int     dumb_ia         ();
+        int     random_ia       ();
+        double  alpha_beta      (Node *n, double a, double b);
 };

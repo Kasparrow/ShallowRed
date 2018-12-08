@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "Piece.h"
 #include "Functions.h"
 #include "Board.h"
@@ -93,7 +95,7 @@ bool Piece::check_and_add_authorized_move(int line, int column, int case_number)
     // occupied case
     else
     {
-        if (_board->is_case_occupied_by_opponant(line, column, get_color()))
+        if (_board->is_case_occupied_by_opponent(line, column, get_color()))
             add_authorized_move(line, column, case_number);
 
         continue_exploration = false;
@@ -223,7 +225,7 @@ void Piece::add_knight_moves()
                 continue;
 
             // - check if destination case in not occupied by ally piece
-            if (!_board->is_case_occupied(_line + i, _column + j) || _board->is_case_occupied_by_opponant(_line + i, _column + j, get_color())) 
+            if (!_board->is_case_occupied(_line + i, _column + j) || _board->is_case_occupied_by_opponent(_line + i, _column + j, get_color())) 
                 check_and_add_authorized_move(_line + i, _column + j, (_line + i) * 8 + (_column + j));
         }
     }

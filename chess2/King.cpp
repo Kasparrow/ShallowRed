@@ -1,5 +1,6 @@
 #include "Piece.h"
 #include "Board.h"
+#include "Functions.h"
 
 King::King() : Piece() {}
 

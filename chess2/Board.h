@@ -3,7 +3,6 @@
 
 #include <array>
 
-#include "Defines.h"
 #include "Case.h"
 #include "Player.h"
 #include "MoveHistory.h"
@@ -30,7 +29,7 @@ class Board
         void                        force_move                              (int x_start, int y_start, int x_end, int y_end);
         void                        cancel_move                             ();
         bool                        is_case_occupied                        (int l, int c);
-        bool                        is_case_occupied_by_opponant            (int l, int c, char player_color);
+        bool                        is_case_occupied_by_opponent            (int l, int c, char player_color);
         void                        analyze                                 (Player* current_player);
         void                        remove_pined_flags                      ();
         Player*                     get_white                               () const;

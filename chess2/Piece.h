@@ -1,11 +1,8 @@
 #ifndef PIECE_H_INCLUDED
 #define PIECE_H_INCLUDED
 
-#include <iostream>
 #include <vector>
-#include <algorithm>
 
-#include "Functions.h"
 #include "Board.h"
 
 class Board;
@@ -94,14 +91,14 @@ class King : public Piece
     public:
                                 King                                    ();
                                 King                                    (int l, int c, Board *b, char co, double v);
-                                ~King                                   () {};
+                                ~King                                   () = default;
         bool                    has_moved                               ();
         bool                    is_in_check                             ();
-        char                    get_name                                ();
+        char                    get_name                                () override;
         void                    set_moved                               (bool m);
-        void                    compute_authorized_moves                ();
-        void                    compute_threats                         ();
-        void                    set_coordinates                         (int l, int c);
+        void                    compute_authorized_moves                () override;
+        void                    compute_threats                         () override;
+        void                    set_coordinates                         (int l, int c) override;
         void                    check_pinned_pieces                     (int line_modifier, int column_modifier);
         void                    compute_out_of_check_cases              ();
 
@@ -114,10 +111,10 @@ class Queen : public Piece
     public:
                                 Queen                                   ();
                                 Queen                                   (int l, int c, Board *b, char co, double v);
-                                ~Queen                                  () {};
-        char                    get_name                                ();
-        void                    compute_authorized_moves                ();
-        void                    compute_threats                         ();
+                                ~Queen                                  () = default;
+        char                    get_name                                () override;
+        void                    compute_authorized_moves                () override;
+        void                    compute_threats                         () override;
 };
 
 class Rook : public Piece 
@@ -125,12 +122,12 @@ class Rook : public Piece
     public:
                                 Rook                                    ();
                                 Rook                                    (int l, int c, Board *b, char co, double v);
-                                ~Rook                                   () {};
+                                ~Rook                                   () = default;
         bool                    has_moved                               ();
-        char                    get_name                                ();
+        char                    get_name                                () override;
         void                    set_moved                               (bool m);
-        void                    compute_authorized_moves                ();
-        void                    compute_threats                         ();
+        void                    compute_authorized_moves                () override;
+        void                    compute_threats                         () override;
 
     private:
         bool                    _moved;
@@ -141,10 +138,10 @@ class Knight : public Piece
     public:
                                 Knight                                  ();
                                 Knight                                  (int l, int c, Board *b, char co, double v);
-                                ~Knight                                 () {};
-        char                    get_name                                ();
-        void                    compute_authorized_moves                ();
-        void                    compute_threats                         ();
+                                ~Knight                                 () = default;
+        char                    get_name                                () override;
+        void                    compute_authorized_moves                () override;
+        void                    compute_threats                         () override;
 };
 
 class Bishop : public Piece 
@@ -152,10 +149,10 @@ class Bishop : public Piece
     public:
                                 Bishop                                  ();
                                 Bishop                                  (int l, int c, Board *b, char co, double v);
-                                ~Bishop                                 () {};
-        char                    get_name                                ();
-        void                    compute_authorized_moves                ();
-        void                    compute_threats                         ();
+                                ~Bishop                                 () = default;
+        char                    get_name                                () override;
+        void                    compute_authorized_moves                () override;
+        void                    compute_threats                         () override;
 };
 
 class Pawn : public Piece 
@@ -163,10 +160,10 @@ class Pawn : public Piece
     public:
                                 Pawn                                    ();
                                 Pawn                                    (int l, int c, Board *b, char co, double v);
-                                ~Pawn                                   () {};
-        char                    get_name                                ();
-        void                    compute_authorized_moves                ();
-        void                    compute_threats                         ();
+                                ~Pawn                                   () = default;
+        char                    get_name                                () override;
+        void                    compute_authorized_moves                () override;
+        void                    compute_threats                         () override;
 };
 
 #endif

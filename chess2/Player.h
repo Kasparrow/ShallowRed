@@ -1,12 +1,9 @@
 #ifndef PLAYER_H_INCLUDED
 #define PLAYER_H_INCLUDED
 
-#include <iostream>
 #include <list>
-#include <string>
 #include <vector>
 
-#include "Functions.h"
 #include "Piece.h"
 
 

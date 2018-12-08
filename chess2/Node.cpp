@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "Node.h"
 
 Node::Node() : _childs()
@@ -26,7 +28,7 @@ void Node::add_child(Node* n)
 void Node::remove_child(Node* n)
 {
     // - remove only the first occurence of n, may cause error
-    std::vector<Node*>::iterator position = std::find(_childs.begin(), _childs.end(), n);
+    auto position = std::find(_childs.begin(), _childs.end(), n);
   
     if (position != _childs.end())
         _childs.erase(position);

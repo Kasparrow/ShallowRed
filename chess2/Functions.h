@@ -1,9 +1,6 @@
 #ifndef FUNCTIONS_H_INCLUDED
 #define FUNCTIONS_H_INCLUDED
 
-#include <cmath>
-#include <iostream>
-
 /*! Convert integer to column name */
 char col_int_to_char(int x);
 

@@ -1,7 +1,6 @@
 #ifndef CASE_H_INCLUDED
 #define CASE_H_INCLUDED
 
-#include <iostream>
 #include <list>
 
 #include "Piece.h"
@@ -13,7 +12,7 @@ class Case
 {
     public:
                                 Case                        ();
-                                Case                        (int l, int c, Board *b, Piece *occupant);
+                                Case                        (int l, int c, Board* b, Piece *o);
         void                    print                       () const;
         bool                    is_occupied                 () const;
         Piece*                  get_occupant                () const;
@@ -25,7 +24,7 @@ class Case
         bool                    is_threatened_by_black      () const;
         bool                    is_threatened_by_white      () const;
         std::list<Piece*>       get_threats                 () const;
-        int                     count_color_threats         (char opponant_color);
+        int                     count_color_threats         (const char color);
 
     private:
         int                     _line;

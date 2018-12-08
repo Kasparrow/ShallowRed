@@ -1,4 +1,7 @@
+#include <iostream>
+
 #include "Move.h"
+#include "Functions.h"
 
 Move::Move()
 {

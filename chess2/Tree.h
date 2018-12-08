@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _TREE_H_INCLUDED_
+#define _TREE_H_INCLUDED_
+
 #include "Node.h"
 #include "Board.h"
 
@@ -14,3 +16,5 @@ class Tree
     Node*   _root;
     Node*   _current;
 };
+
+#endif

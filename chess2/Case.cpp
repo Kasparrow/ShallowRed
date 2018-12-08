@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "Case.h"
 
 using namespace std;

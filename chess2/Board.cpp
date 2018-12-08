@@ -1,5 +1,8 @@
+#include <iostream>
+
 #include "Board.h"
 #include "ShallowRed.h"
+#include "Defines.h"
 
 using namespace std;
 
@@ -313,7 +316,7 @@ bool Board::is_case_occupied(const int l, const int c)
     return get_case(l, c)->is_occupied();
 }
 
-bool Board::is_case_occupied_by_opponant(const int l, const int c, const char player_color)
+bool Board::is_case_occupied_by_opponent(const int l, const int c, const char player_color)
 {
     return (is_case_occupied(l, c) && get_case(l, c)->get_occupant()->get_color() != player_color);
 }

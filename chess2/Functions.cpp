@@ -1,3 +1,6 @@
+#include <cmath>
+#include <iostream>
+
 #include "Functions.h"
 #include "Defines.h"
 
@@ -24,8 +27,6 @@ char col_int_to_char(int x)
         default:
             return '?';
     }
-
-    return '?';
 }
 
 int col_char_to_int(char c) 
@@ -51,8 +52,6 @@ int col_char_to_int(char c)
         default:
             return 0;
     }
-
-    return 0;
 }
 
 int direction(int src, int dest)
@@ -67,15 +66,15 @@ int direction(int src, int dest)
         return  0;
 
     // - same column
-    else if (y_src == y_dest)
+    if (y_src == y_dest)
         return 1;
 
     // - top left to bottom right
-    else if (x_src - x_dest == y_src - y_dest)
+    if (x_src - x_dest == y_src - y_dest)
         return 2;
 
     // - top right to bottom left
-    else if (abs(x_src - x_dest) == abs(y_src - y_dest))
+    if (abs(x_src - x_dest) == abs(y_src - y_dest))
         return 3;
 
     // - default

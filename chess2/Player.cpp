@@ -1,7 +1,11 @@
 #include "Player.h"
 #include "Board.h"
 
+#include <iostream>
 #include <algorithm>
+#include <string>
+
+#include "Functions.h"
 
 using namespace std;
 

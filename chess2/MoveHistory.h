@@ -2,7 +2,6 @@
 #define MOVE_HISTORY_H_INCLUDED
 
 #include<vector>
-#include <iostream>
 
 #include "Move.h"
 

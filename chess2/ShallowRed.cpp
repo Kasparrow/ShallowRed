@@ -1,6 +1,8 @@
-﻿#include "ShallowRed.h"
+﻿#include <iostream>
 #include <algorithm>
 #include <cstdlib>
+
+#include "ShallowRed.h"
 
 ShallowRed::ShallowRed() : Player()
 {
@@ -18,7 +20,7 @@ ShallowRed::~ShallowRed()
 }
 
 
-double ShallowRed::alphabeta(Node* n, double a, double b)
+double ShallowRed::alpha_beta(Node* n, double a, double b)
 {
     if (n->is_leaf())
         return n->get_value();
@@ -28,7 +30,7 @@ double ShallowRed::alphabeta(Node* n, double a, double b)
 
     for (auto it : n->get_childs())
     {
-        v = -alphabeta(it, -b, -a);
+        v = -alpha_beta(it, -b, -a);
 
         if (v < best)
             continue;
@@ -50,10 +52,10 @@ double ShallowRed::alphabeta(Node* n, double a, double b)
 int ShallowRed::play()
 {
     // return the action of the selected AI
-    return randomIA();
+    return random_ia();
 }
 
-int ShallowRed::dumbIA()
+int ShallowRed::dumb_ia()
 {
     auto pieces = get_list_pieces();
 
@@ -81,7 +83,7 @@ int ShallowRed::dumbIA()
     return MOVE;
 }
 
-int ShallowRed::randomIA()
+int ShallowRed::random_ia()
 {
     auto pieces = get_list_pieces();
 
