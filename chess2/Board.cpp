@@ -12,8 +12,8 @@ Board::Board ()
     // - init players
     _white = new Player(this, 'w');
     //_white = new ShallowRed(this, 'w');
-    _black = new Player(this, 'b');
-    //_black = new ShallowRed(this, 'b');
+    //_black = new Player(this, 'b');
+    _black = new ShallowRed(this, 'b');
 
     // init history
     _history = new MoveHistory();

@@ -5,6 +5,8 @@
 #include "ShallowRed.h"
 #include "Functions.h"
 
+#define ALPHA_BETA_DEPTH 3
+
 ShallowRed::ShallowRed() : Player()
 {
 
@@ -20,39 +22,155 @@ ShallowRed::~ShallowRed()
 
 }
 
-
-double ShallowRed::alpha_beta(Node* n, double a, double b)
+double ShallowRed::alpha_beta(Board* b, double alpha, double beta, bool is_min_node, int depth, int& ret_x_start, int& ret_y_start, int& ret_x_end, int& ret_y_end)
 {
-    if (n->is_leaf())
-        return n->get_value();
+    auto pieces = get_list_pieces();
 
-    double  best = -std::numeric_limits<double>::infinity();
-    double  v;
+    // - leaf node
+    if (depth == 0)
+        return evaluate(b);
 
-    for (auto it : n->get_childs())
+    int y_start;
+    int x_start;
+    int y_end;
+    int x_end;
+
+    double v = INFINITY;
+
+    if (is_min_node)
     {
-        v = -alpha_beta(it, -b, -a);
+        for (auto piece : pieces)
+        {
+            auto moves = piece->get_authorized_moves();
 
-        if (v < best)
-            continue;
+            // ignore piece with no authorized moves
+            if (moves.empty())
+                continue;
 
-        best = v;
+            // select the first authorized move
+            for (auto move : moves)
+            {
+                y_start = piece->get_coordinates() % 8;
+                x_start = piece->get_coordinates() / 8;
+                y_end = move % 8;
+                x_end = move / 8;
 
-        if (best < a)
-            continue;
+                // - update board
+                _board->move(x_start, y_start, x_end, y_end, _color);
+                _board->set_constraints(this);
 
-        a = best;
+                v = std::min(v, alpha_beta(b, alpha, beta, !is_min_node, depth - 1, ret_x_start, ret_y_start, ret_x_end, ret_y_end));
 
-        if (a >= b)
-            return best;
+                // - restore board
+                _board->cancel_move();
+                _board->set_constraints(this);
+
+                if (alpha >= v)
+                {
+                    if (depth == ALPHA_BETA_DEPTH)
+                    {
+                        std::cout << "UPDATE\n";
+                        ret_x_start = x_start;
+                        ret_y_start = y_start;
+                        ret_x_end = y_start;
+                        ret_y_end = y_end;
+                    }
+
+                    return v;
+                }
+
+                if (v < beta && depth == ALPHA_BETA_DEPTH)
+                {
+                    std::cout << "UPDATE\n";
+                    ret_x_start = x_start;
+                    ret_y_start = y_start;
+                    ret_x_end = y_start;
+                    ret_y_end = y_end;
+                }
+
+                beta = std::min(beta, v);
+            }
+        }
     }
 
-    return best;
+    else
+    {
+        v = -INFINITY;
+
+        for (auto piece : pieces)
+        {
+            auto moves = piece->get_authorized_moves();
+
+            // ignore piece with no authorized moves
+            if (moves.empty())
+                continue;
+
+            // select the first authorized move
+            for (auto move : moves)
+            {
+                y_start = piece->get_coordinates() % 8;
+                x_start = piece->get_coordinates() / 8;
+                y_end = move % 8;
+                x_end = move / 8;
+
+                // - update board
+                _board->move(x_start, y_start, x_end, y_end, _color);
+                _board->set_constraints(this);
+
+                v = std::max(v, alpha_beta(b, alpha, beta, !is_min_node, depth - 1, ret_x_start, ret_y_start, ret_x_end, ret_y_end));
+
+                // - restore board
+                _board->cancel_move();
+                _board->set_constraints(this);
+
+                if (v >= beta)
+                {
+                    if (depth == ALPHA_BETA_DEPTH)
+                    {
+                        std::cout << "UPDATE\n";
+                        ret_x_start = x_start;
+                        ret_y_start = y_start;
+                        ret_x_end = y_start;
+                        ret_y_end = y_end;
+                    }
+
+                    return v;
+                }
+
+                if (depth == ALPHA_BETA_DEPTH && v > alpha)
+                {
+                    std::cout << "UPDATE\n";
+                    ret_x_start = x_start;
+                    ret_y_start = y_start;
+                    ret_x_end = y_start;
+                    ret_y_end = y_end;
+                }
+
+                alpha = std::max(alpha, v);
+            }
+        }
+    }
+
+    if (depth == ALPHA_BETA_DEPTH)
+    {
+        ret_x_start = x_start;
+        ret_y_start = y_start;
+        ret_x_end = y_start;
+        ret_y_end = y_end;
+    }
+
+    return v;
 }
+
 
 int ShallowRed::play()
 {
     // return the action of the selected AI
+    int x_start, y_start, x_end, y_end;
+    double test = alpha_beta(_board, -INFINITY, INFINITY, false, ALPHA_BETA_DEPTH, x_start, y_start, x_end, y_end);
+
+    std::cout << "ALPHABETA SUGGEST : " << case_to_coordinates(x_start, y_start) << " " << case_to_coordinates(x_end, y_end) << std::endl;
+
     return smarter_ia();
 }
 
@@ -78,6 +196,8 @@ int ShallowRed::dumb_ia()
 
         // we can force the move as we know that we IA only play legal moves
         _board->move(x_start, y_start, x_end, y_end, _color);
+
+        _board->set_constraints(this);
 
         break;
     }

@@ -63,8 +63,6 @@ void King::compute_out_of_check_cases()
         // /!\ king may try to take a piece which is protected by another
         player->add_out_of_check_case(x_threat * 8 + y_threat);
 
-        std::cout << "DIRECTION : " << dir  << " : T " << y_threat << " : K " << y_king << std::endl;
-
         // all the case between the king and the threat break the check,
         // so we just have to add all the case between them in the out of 
         // check move list
