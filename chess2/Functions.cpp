@@ -4,6 +4,26 @@
 #include "Functions.h"
 #include "Defines.h"
 
+std::string case_to_coordinates(int id)
+{
+    std::string res;
+
+    res += col_int_to_char(id % 8 + 1);
+    res += std::to_string(id / 8 + 1);
+
+    return res;
+}
+
+std::string case_to_coordinates(int line, int col)
+{
+    std::string res;
+
+    res += col_int_to_char(line + 1);
+    res += std::to_string(col + 1);
+
+    return res;
+}
+
 char col_int_to_char(int x) 
 {
     switch (x) 
@@ -68,12 +88,12 @@ int direction(int src, int dest)
     // - same column
     if (y_src == y_dest)
         return 1;
-
-    // - top left to bottom right
+    
+    // - top right to bottom left
     if (x_src - x_dest == y_src - y_dest)
         return 2;
 
-    // - top right to bottom left
+    // - top left to bottom right
     if (abs(x_src - x_dest) == abs(y_src - y_dest))
         return 3;
 

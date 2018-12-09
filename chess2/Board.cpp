@@ -3,20 +3,20 @@
 #include "Board.h"
 #include "ShallowRed.h"
 #include "Defines.h"
+#include "PromoteMove.h"
 
 using namespace std;
 
 Board::Board ()  
 {
     // - init players
-    //white = new Player(this, 'w');
-  _white = new ShallowRed(this, 'w');
-  //black = new Player(this, 'b');
-  _black = new ShallowRed(this, 'b');
+    _white = new Player(this, 'w');
+    //_white = new ShallowRed(this, 'w');
+    _black = new Player(this, 'b');
+    //_black = new ShallowRed(this, 'b');
 
-
-  // init history
-  _history = new MoveHistory();
+    // init history
+    _history = new MoveHistory();
 
     for (int i = 7; i >= 0; i--) 
     {
@@ -88,7 +88,7 @@ void Board::print ()
 
     cout << "-------------------------------------------------\n";
     
-    if (DEBUG)
+    if (!DEBUG)
     {
         cout << "White is check : ";
         cout << _white->is_check() << endl;
@@ -99,6 +99,10 @@ void Board::print ()
         _white->print_all_authorized_moves();
         cout << "Black authorized moves : ";
         _black->print_all_authorized_moves();
+        cout << "White out of check moves : ";
+        _white->print_out_of_check_moves();
+        cout << "Black out of check moves : ";
+        _black->print_out_of_check_moves();
     }
     cout << "-------------------------------------------------\n";
     _history->print();
@@ -111,7 +115,7 @@ Case* Board::get_case(const int l, const int c)
     return _cases[(l * 8) + c];
 }
 
-int Board::game() 
+int Board::game()
 {
     auto i = 0;
 
@@ -120,23 +124,26 @@ int Board::game()
         int action;
 
         auto current_player = ((i % 2 == 0) ? _white : _black);
-        auto opponent_player = ((i % 2 == 0) ? _black : _white);
 
-        compute_threats_and_authorized_moves(current_player);
+        set_constraints(current_player);
+        print();
+
+        // - test if player is mat first
+        if (current_player->is_check_mat())
+            return current_player->get_color() == 'w' ? BLACK_WIN : WHITE_WIN;
 
         // - if no authorize moves : draw
         if (!current_player->has_authorized_moves())
             return DRAW;
-        
 
-        do 
+        do
         {
             action = current_player->play();
 
             if (action == Player::ABANDON)
                 return (current_player->get_color() == 'w') ? BLACK_WIN : WHITE_WIN;
 
-            if (action == Player::OFFER_DRAW) 
+            if (action == Player::OFFER_DRAW)
             {
                 cout << "Accept draw ? (y/n) : ";
                 const char accept = getchar();
@@ -145,13 +152,7 @@ int Board::game()
             }
         } while (action != Player::MOVE);
 
-        analyze(current_player);
-        print();
         i++;
-
-        if (opponent_player->is_check_mat())
-            return (opponent_player->get_color() == 'w') ? BLACK_WIN : WHITE_WIN;
-
     }
 }
 
@@ -191,8 +192,24 @@ bool Board::move(const int x_start, const int y_start, const int x_end, const in
     (get_case(x_end, y_end)->get_occupant())->set_coordinates(x_end, y_end);
     get_case(x_start, y_start)->set_occupant(nullptr);
 
+    // - promote pawn if necessary
+    if (piece_to_move->is_pawn() && (x_end == 0 || x_end == 7))
+    {
+        auto promote = new Queen(x_end, y_end, this, c, 9);
+        auto player = c == 'w' ? _white : _black;
+
+        player->remove_piece(piece_to_move);
+        player->add_piece(promote);
+        get_case(x_end, y_end)->set_occupant(promote);
+
+        const auto m = new PromoteMove(x_start, y_start, x_end, y_end, piece_to_move, piece_to_take, promote);
+        _history->add_move(m);
+
+        return true;
+    }
+
     // - store move in move history
-    Move* m = new Move(x_start, y_start, x_end, y_end, piece_to_take);
+    const auto m = new Move(x_start, y_start, x_end, y_end, piece_to_move, piece_to_take);
     _history->add_move(m);
 
     return true;
@@ -212,69 +229,9 @@ void Board::cancel_move()
 {
     Move* last_move = _history->cancel_move();
 
-    // rewrite this part with specialize MoveClass (i.e KCastlingMove, QCastlingMove, etc..)
-    if (!last_move->is_special_move())
-    {
-        force_move(last_move->get_x_end(), last_move->get_y_end(), last_move->get_x_start(), last_move->get_y_start());
-
-        Piece* take = last_move->get_take();
-
-        if (take != nullptr)
-        {
-            get_case(last_move->get_x_end(), last_move->get_y_end())->set_occupant(take);
-
-            if (take->get_color() == 'w')
-                _white->add_piece(take);
-
-            else
-                _black->add_piece(take);
-        }
-    }
-
-    // castling / promote
-    else
-    {
-        // k_castling
-        if (last_move->get_y_start() == 4 && last_move->get_y_end() == 6 && (last_move->get_x_start() == 0 || last_move->get_x_start() == 7))
-        {
-            force_move(last_move->get_x_start(), 6, last_move->get_x_start(), 4);
-            force_move(last_move->get_x_start(), 5, last_move->get_x_start(), 7);
-            dynamic_cast<King*>(get_case(last_move->get_x_start(), 4)->get_occupant())->set_moved(false);
-            dynamic_cast<Rook*>(get_case(last_move->get_x_start(), 7)->get_occupant())->set_moved(false);
-        }
-
-        // q_castling
-        if (last_move->get_y_start() == 4 && last_move->get_y_end() == 2 && (last_move->get_x_start() == 0 || last_move->get_x_start() == 7))
-        {
-            force_move(last_move->get_x_start(), 2, last_move->get_x_start(), 4);
-            force_move(last_move->get_x_start(), 3, last_move->get_x_start(), 0);
-            dynamic_cast<King*>(get_case(last_move->get_x_start(), 4)->get_occupant())->set_moved(false);
-            dynamic_cast<Rook*>(get_case(last_move->get_x_start(), 0)->get_occupant())->set_moved(false);
-        }
-
-        // promote
-        //TODO
-    }
+    last_move->cancel(this);
 
     delete last_move;
-}
-
-void Board::compute_threats_and_authorized_moves(Player* current_player) 
-{
-    // clear threats and pinned flag
-    clear_threats();
-
-    // compute for both player first because authorized moves
-    // depends of it
-    _white->compute_threats();
-    _black->compute_threats();
-
-    // once we have threats, set pinned flag on all pieces
-    compute_pined_pieces();
-
-    // finally, compute authorized moves for both players
-    _white->compute_authorized_moves();
-    _black->compute_authorized_moves();
 }
 
 void Board::clear_threats()
@@ -333,12 +290,30 @@ void Board::remove_pined_flags()
         it->set_pinned(false);
 }
 
-void Board::analyze(Player* current_player)
+void Board::compute_threats_and_authorized_moves(Player* current_player)
 {
-    remove_pined_flags();
+    // compute for both player first because authorized moves
+    // depends of it
+    _white->compute_threats();
+    _black->compute_threats();
+
+    // once we have threats, set pinned flag on all pieces
     compute_pined_pieces();
-    compute_threats_and_authorized_moves(current_player);
     compute_out_of_check_position();
+
+    // finally, compute authorized moves for both players
+    _white->compute_authorized_moves();
+    _black->compute_authorized_moves();
+}
+
+void Board::set_constraints(Player* current_player)
+{
+    // clear threats and pinned flag
+    clear_threats();
+    remove_pined_flags();
+
+    // compute threats, pinned flag and authorized moves
+    compute_threats_and_authorized_moves(current_player);
 }
 
 Player* Board::get_white() const
@@ -371,10 +346,24 @@ MoveHistory* Board::get_history() const
     return _history;
 }
 
-
 std::vector<int> Board::get_out_of_check_moves(char player_color) const
 {
     auto player = (player_color == 'w') ? get_white() : get_black();
 
     return player->get_out_of_check_cases();
+}
+
+int Board::count_threats(char color) const
+{
+    int total = 0;
+
+    if (color == 'w')
+        for (auto c : _cases)
+            total += c->is_threatened_by_white() ? 1 : 0;
+
+    if (color == 'b')
+        for (auto c : _cases)
+            total += c->is_threatened_by_black() ? 1 : 0;
+
+    return total;
 }

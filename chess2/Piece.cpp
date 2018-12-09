@@ -76,7 +76,7 @@ void Piece::add_authorized_move(int line, int column, int case_number)
         return;
     }
 
-    _authorized_moves.push_back(case_number);   
+    _authorized_moves.push_back(case_number);
 }
 
 void Piece::add_threat(int line, int column, int case_number)
@@ -549,4 +549,9 @@ bool Piece::is_knight()
 bool Piece::is_pawn()
 {
   return get_name() == 'P' || get_name() == 'p';
+}
+
+int Piece::get_value() const
+{
+    return _value;
 }

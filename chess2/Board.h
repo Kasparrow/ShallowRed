@@ -30,7 +30,7 @@ class Board
         void                        cancel_move                             ();
         bool                        is_case_occupied                        (int l, int c);
         bool                        is_case_occupied_by_opponent            (int l, int c, char player_color);
-        void                        analyze                                 (Player* current_player);
+        void                        set_constraints                         (Player* current_player);
         void                        remove_pined_flags                      ();
         Player*                     get_white                               () const;
         Player*                     get_black                               () const;
@@ -38,6 +38,7 @@ class Board
         Piece*                      get_white_king                          () const;
         MoveHistory*                get_history                             () const;
         std::vector<int>            get_out_of_check_moves                  (char player_color) const;
+        int                         count_threats                           (char color) const;
 
         Case*                       operator()                              (unsigned line, unsigned column);
 

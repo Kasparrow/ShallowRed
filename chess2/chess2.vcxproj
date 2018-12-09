@@ -118,6 +118,7 @@
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Case.cpp" />
     <ClCompile Include="Functions.cpp" />
+    <ClCompile Include="KCastlingMove.cpp" />
     <ClCompile Include="King.cpp" />
     <ClCompile Include="Knight.cpp" />
     <ClCompile Include="main.cpp" />
@@ -127,6 +128,8 @@
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PromoteMove.cpp" />
+    <ClCompile Include="QCastlingMove.cpp" />
     <ClCompile Include="Queen.cpp" />
     <ClCompile Include="Rook.cpp" />
     <ClCompile Include="ShallowRed.cpp" />
@@ -137,11 +140,14 @@
     <ClInclude Include="Case.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="Defines.h" />
+    <ClInclude Include="KCastlingMove.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="MoveHistory.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PromoteMove.h" />
+    <ClInclude Include="QCastlingMove.h" />
     <ClInclude Include="ShallowRed.h" />
     <ClInclude Include="Tree.h" />
   </ItemGroup>

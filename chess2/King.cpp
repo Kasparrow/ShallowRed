@@ -1,6 +1,7 @@
 #include "Piece.h"
 #include "Board.h"
 #include "Functions.h"
+#include <iostream>
 
 King::King() : Piece() {}
 
@@ -32,20 +33,20 @@ bool King::is_in_check()
 void King::compute_out_of_check_cases()
 {
     char color = get_color();
+    char opponent_color = color == 'w' ? 'b' : 'w';
     Player* player = (color == 'w') ? _board->get_white() : player = _board->get_black();
     int coordinates = get_coordinates();
     int x_king = coordinates / 8;
     int y_king = coordinates % 8;
-    int threats_counter = (*_board)(x_king, y_king)->count_color_threats(color);
+    int threats_counter = (*_board)(x_king, y_king)->count_color_threats(opponent_color);
     std::list<Piece*> threats = (*_board)(x_king, y_king)->get_threats();
 
     // - make sur that we cleared the out of check cases
     player->clear_out_of_check_cases();
 
-	// threats counter must be equals to 1, otherwise king in threatened by
+    // threats counter must be equals to 1, otherwise king in threatened by
     // two piece at the same time, thus, there is no out of move case because
     // it need to be protected from two different position in a single move
-    /* if threats counter == 1 : not empty... && !_board->get_case(x_king, y_king)->get_threats().empty())*/
 
     if (player->is_check() && threats_counter == 1) 
     {
@@ -61,6 +62,8 @@ void King::compute_out_of_check_cases()
         // if we take the treatenig piece, we are out of check
         // /!\ king may try to take a piece which is protected by another
         player->add_out_of_check_case(x_threat * 8 + y_threat);
+
+        std::cout << "DIRECTION : " << dir  << " : T " << y_threat << " : K " << y_king << std::endl;
 
         // all the case between the king and the threat break the check,
         // so we just have to add all the case between them in the out of 
@@ -89,7 +92,7 @@ void King::compute_out_of_check_cases()
                         player->add_out_of_check_case(i * 8 + y_king);
                 break;
 
-            // - top left to bottom right
+            // - top right to bottom left
             case 2:
                 if (y_king > y_threat)
                     for (int i = 1; y_threat + i < y_king; i++)
@@ -99,11 +102,11 @@ void King::compute_out_of_check_cases()
                         player->add_out_of_check_case((x_king + i) * 8 + y_king + i);
                 break;
             
-            // - top right to bottom left
+            // - top left to bottom right
             case 3:
                 if(y_king > y_threat)
                     for (int i = 1; y_threat + i < y_king; i++)
-                        player->add_out_of_check_case((x_threat + i) * 8 + y_threat - i);
+                        player->add_out_of_check_case((x_threat - i) * 8 + y_threat + i);
                 else
                     for (int i = 1; y_king + i < y_threat; i++)
                         player->add_out_of_check_case((x_king - i) * 8 + y_king + i);

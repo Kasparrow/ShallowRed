@@ -37,6 +37,12 @@
     <Filter Include="Fichiers d%27en-tête\Player">
       <UniqueIdentifier>{51238144-321a-4694-94cf-36c8f14dac52}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Board\Move">
+      <UniqueIdentifier>{d1816604-e918-4d2b-bc4d-5553c90171f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Board\Move">
+      <UniqueIdentifier>{f737cbf8-af75-4e4a-af2f-4a424e5b149b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -85,10 +91,19 @@
       <Filter>Fichiers sources\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Move.cpp">
-      <Filter>Fichiers sources\Board</Filter>
+      <Filter>Fichiers sources\Board\Move</Filter>
     </ClCompile>
     <ClCompile Include="MoveHistory.cpp">
-      <Filter>Fichiers sources\Board</Filter>
+      <Filter>Fichiers sources\Board\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="KCastlingMove.cpp">
+      <Filter>Fichiers sources\Board\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="QCastlingMove.cpp">
+      <Filter>Fichiers sources\Board\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="PromoteMove.cpp">
+      <Filter>Fichiers sources\Board\Move</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -116,14 +131,23 @@
     <ClInclude Include="Node.h">
       <Filter>Fichiers d%27en-tête\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Move.h">
-      <Filter>Fichiers d%27en-tête\Board</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveHistory.h">
-      <Filter>Fichiers d%27en-tête\Board</Filter>
-    </ClInclude>
     <ClInclude Include="Defines.h">
       <Filter>Fichiers d%27en-tête\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Move.h">
+      <Filter>Fichiers d%27en-tête\Board\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveHistory.h">
+      <Filter>Fichiers d%27en-tête\Board\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="KCastlingMove.h">
+      <Filter>Fichiers d%27en-tête\Board\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="QCastlingMove.h">
+      <Filter>Fichiers d%27en-tête\Board\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="PromoteMove.h">
+      <Filter>Fichiers d%27en-tête\Board\Move</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

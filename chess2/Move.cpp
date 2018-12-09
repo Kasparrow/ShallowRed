@@ -3,82 +3,72 @@
 #include "Move.h"
 #include "Functions.h"
 
-Move::Move()
-{
-
-}
-
-Move::Move(int x_start, int y_start, int x_end, int y_end, Piece* take)
+Move::Move(int x_start, int y_start, int x_end, int y_end, Piece* current, Piece* take)
 {
     _x_start = x_start;
     _x_end = x_end;
     _y_start = y_start;
     _y_end = y_end;
+    _current = current;
     _take = take;
-    _special_move = false;
+    _moved_flag = false;
 }
 
-Move::Move(int x_start, int y_start, int x_end, int y_end, Piece* take, bool special_move)
+Move::Move(int x_start, int y_start, int x_end, int y_end, Piece* current, Piece* take, bool moved_flag)
 {
     _x_start = x_start;
     _x_end = x_end;
     _y_start = y_start;
     _y_end = y_end;
+    _current = current;
     _take = take;
-    _special_move = special_move;
-}
-
-
-Move::~Move()
-{
-
+    _moved_flag = moved_flag;
 }
 
 void Move::print()
 {
-    if (!_special_move)
-        std::cout << col_int_to_char(_y_start + 1) << (_x_start + 1) << " " << col_int_to_char(_y_end + 1) << (_x_end + 1);
+    const char name = !_current->is_pawn() ? toupper(_current->get_name()) : ' ';
+    const char separator = _take != nullptr ? 'x' : ' ';
 
-    else
-    {
-        // - k_castling
-        if (_y_start == 4 && _y_end == 6 && (_x_start == 0 || _x_start == 7))
-            std::cout << "0-0";
-
-        // - q_castling
-        else if (_y_start == 4 && _y_end == 2 && (_x_start == 0 || _x_start == 7))
-            std::cout << "0-0-0";
-
-        // - promote
-        // TODO
-    }
+    std::cout << name << case_to_coordinates(_y_start, _x_start) << separator << case_to_coordinates(_y_end, _x_end);
 }
 
-int Move::get_x_start()
+int Move::get_x_start() const
 {
     return _x_start;
 }
-int Move::get_y_start()
+int Move::get_y_start() const
 {
     return _y_start;
 }
 
-int Move::get_x_end()
+int Move::get_x_end() const
 {
     return _x_end;
 }
 
-int Move::get_y_end()
+int Move::get_y_end() const
 {
     return _y_end;
 }
 
-Piece* Move::get_take()
+Piece* Move::get_take() const
 {
     return _take;
 }
 
-bool Move::is_special_move()
+void Move::cancel(Board* b)
 {
-    return _special_move;
+    b->force_move(_x_end, _y_end, _x_start, _y_start);
+
+    if (_take != nullptr)
+    {
+        b->get_case(_x_end, _y_end)->set_occupant(_take);
+
+        if (_take->get_color() == 'w')
+            b->get_white()->add_piece(_take);
+
+        else
+            b->get_black()->add_piece(_take);
+    }
 }

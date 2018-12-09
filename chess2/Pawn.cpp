@@ -32,10 +32,10 @@ void Pawn::compute_authorized_moves()
                 add_white_pawn_forward_moves();
                 break;
             case 2:
-                add_white_pawn_take_left_moves();
+                add_white_pawn_take_right_moves();
                 break;
             case 3:
-                add_white_pawn_take_right_moves();
+                add_white_pawn_take_left_moves();
                 break;
             default:
                 break;
@@ -63,10 +63,10 @@ void Pawn::compute_authorized_moves()
                 add_black_pawn_forward_moves();
                 break;
             case 2:
-                add_black_pawn_take_left_moves();
+                add_black_pawn_take_right_moves();
                 break;
             case 3:
-                add_black_pawn_take_right_moves();
+                add_black_pawn_take_left_moves();
                 break;
             default:
                 break;

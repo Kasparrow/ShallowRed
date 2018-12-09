@@ -17,16 +17,16 @@ class Piece
         virtual char            get_name                                () = 0;
         char                    get_color                               ();
         int                     get_coordinates                         ();
+        virtual int             get_value                               () const;
         virtual void            compute_authorized_moves                () = 0;
         virtual void            compute_threats                         () = 0;
         std::vector<int>        get_authorized_moves                    ();
         void                    print_authorized_moves                  ();
         virtual void            set_coordinates                         (int l, int c);
         virtual void            compute_pinning                         () {};
-        bool                    is_authorized_move                      (int m);
         void                    set_pinned                              (bool p);
         void                    set_pinned                              (Piece* p)    { _is_pinned = true; _pinned_by = p; }
-        bool                    is_owner_check                          () const;
+        
         
         // - authorized moves methods
         void                    add_top_left_diagonal_moves             (int distance);
@@ -64,6 +64,8 @@ class Piece
         void                    add_black_pawn_take_left_threats        ();
         void                    add_threat                              (int line, int column, int case_number);
         bool                    check_and_add_authorized_move           (int line, int column, int case_number);
+
+        // - flag methods
         bool                    is_pinned                               ();
         bool                    is_king                                 ();
         bool                    is_queen                                ();
@@ -71,6 +73,8 @@ class Piece
         bool                    is_bishop                               ();
         bool                    is_knight                               ();
         bool                    is_pawn                                 ();
+        bool                    is_authorized_move                      (int m);
+        bool                    is_owner_check                          () const;
         
         // - position methods
         Case*                   get_case                                ();

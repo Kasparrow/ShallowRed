@@ -6,6 +6,8 @@
 #include <string>
 
 #include "Functions.h"
+#include "KCastlingMove.h"
+#include "QCastlingMove.h"
 
 using namespace std;
 
@@ -73,7 +75,7 @@ void Player::k_castling()
     dynamic_cast<Rook*>((*_board)(l, 5)->get_occupant())->set_moved(true);
     dynamic_cast<King*>((*_board)(l, 6)->get_occupant())->set_moved(true);
 
-    Move* m = new Move(l, 4, l, 6, nullptr, true);
+    const auto m = new KCastlingMove(_color);
     (_board->get_history())->add_move(m);
 }
 
@@ -95,7 +97,7 @@ void Player::q_castling()
     dynamic_cast<King*>((*_board)(l, 2)->get_occupant())->set_moved(true);
     dynamic_cast<Rook*>((*_board)(l, 3)->get_occupant())->set_moved(true);
 
-    Move* m = new Move(l, 4, l, 2, nullptr, true);
+    const auto m = new QCastlingMove(_color);
     (_board->get_history())->add_move(m);
 }
 
@@ -327,19 +329,14 @@ bool Player::is_check_mat()
     // - king has authorized moves
     if (!king->get_authorized_moves().empty())
     {
-        cout << "AUTHORIZED MOVE IS NOT EMPTY\n";
         king->print_authorized_moves();
 
         return false;
     }
 
     // - out of checks moves and king is not threatened by more than one piece
-
     if (king->get_case()->count_color_threats(opponent_color) < 2 && has_out_of_check_moves())
-    {
-        cout << "out of checks moves and king is not threatened by more than one piece\n";
         return false;
-    }
 
     return true;
 
@@ -373,4 +370,37 @@ Piece* Player::get_king()
     return *std::find_if(_pieces.begin(), _pieces.end(), [](Piece* p) { 
         return p->is_king(); 
     });
+}
+
+void Player::print_out_of_check_moves()
+{
+    for (auto move : _out_of_check_cases)
+        std::cout << col_int_to_char((move % 8) + 1) << (move / 8) + 1 << ", ";
+
+    std::cout << std::endl;
+}
+
+int Player::get_piece_values() const
+{
+    int total = 0;
+
+    for (auto piece : _pieces)
+        total += piece->get_value();
+
+    return total;
+}
+
+int Player::count_threatened_case() const
+{
+    return _board->count_threats(_color);
+}
+
+int Player::count_authorized_moves() const
+{
+    int total = 0;
+
+    for (auto piece : _pieces)
+        total += piece->get_authorized_moves().size();
+
+    return total;
 }

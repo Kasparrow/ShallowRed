@@ -25,6 +25,7 @@ class Player
         void                    compute_threats                     ();
         void                    compute_authorized_moves            ();
         void                    print_all_authorized_moves          ();
+        void                    print_out_of_check_moves            ();
         virtual int             play                                ();
         char                    get_color                           ();
         bool                    check_k_castling                    ();
@@ -41,6 +42,9 @@ class Player
         bool                    has_out_of_check_moves              ();
         bool                    has_authorized_moves                ();
         Piece*                  get_king                            ();
+        int                     get_piece_values                    () const;
+        int                     count_threatened_case               () const;
+        int                     count_authorized_moves              () const;
 
     protected:
         std::list<Piece*>       _pieces;
