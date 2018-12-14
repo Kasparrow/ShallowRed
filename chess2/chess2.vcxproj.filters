@@ -43,6 +43,12 @@
     <Filter Include="Fichiers sources\Board\Move">
       <UniqueIdentifier>{f737cbf8-af75-4e4a-af2f-4a424e5b149b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\Player\IA">
+      <UniqueIdentifier>{4b4170b2-84ff-41a8-94f8-ca20341850c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Player\IA">
+      <UniqueIdentifier>{b991c4f5-0465-4b8c-bd39-1d1f04bdd1b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -81,9 +87,6 @@
     <ClCompile Include="Functions.cpp">
       <Filter>Fichiers sources\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="ShallowRed.cpp">
-      <Filter>Fichiers sources\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Tree.cpp">
       <Filter>Fichiers sources\Utils</Filter>
     </ClCompile>
@@ -105,6 +108,18 @@
     <ClCompile Include="PromoteMove.cpp">
       <Filter>Fichiers sources\Board\Move</Filter>
     </ClCompile>
+    <ClCompile Include="RandomIA.cpp">
+      <Filter>Fichiers sources\Player\IA</Filter>
+    </ClCompile>
+    <ClCompile Include="DumbIA.cpp">
+      <Filter>Fichiers sources\Player\IA</Filter>
+    </ClCompile>
+    <ClCompile Include="ShallowRed.cpp">
+      <Filter>Fichiers sources\Player\IA</Filter>
+    </ClCompile>
+    <ClCompile Include="DeepOneIA.cpp">
+      <Filter>Fichiers sources\Player\IA</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Piece.h">
@@ -120,9 +135,6 @@
       <Filter>Fichiers d%27en-tête\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>Fichiers d%27en-tête\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="ShallowRed.h">
       <Filter>Fichiers d%27en-tête\Player</Filter>
     </ClInclude>
     <ClInclude Include="Tree.h">
@@ -148,6 +160,18 @@
     </ClInclude>
     <ClInclude Include="PromoteMove.h">
       <Filter>Fichiers d%27en-tête\Board\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="DumbIA.h">
+      <Filter>Fichiers d%27en-tête\Player\IA</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomIA.h">
+      <Filter>Fichiers d%27en-tête\Player\IA</Filter>
+    </ClInclude>
+    <ClInclude Include="ShallowRed.h">
+      <Filter>Fichiers d%27en-tête\Player\IA</Filter>
+    </ClInclude>
+    <ClInclude Include="DeepOneIA.h">
+      <Filter>Fichiers d%27en-tête\Player\IA</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

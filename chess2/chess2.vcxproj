@@ -117,6 +117,8 @@
     <ClCompile Include="Bishop.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Case.cpp" />
+    <ClCompile Include="DeepOneIA.cpp" />
+    <ClCompile Include="DumbIA.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="KCastlingMove.cpp" />
     <ClCompile Include="King.cpp" />
@@ -131,6 +133,7 @@
     <ClCompile Include="PromoteMove.cpp" />
     <ClCompile Include="QCastlingMove.cpp" />
     <ClCompile Include="Queen.cpp" />
+    <ClCompile Include="RandomIA.cpp" />
     <ClCompile Include="Rook.cpp" />
     <ClCompile Include="ShallowRed.cpp" />
     <ClCompile Include="Tree.cpp" />
@@ -138,6 +141,8 @@
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="Case.h" />
+    <ClInclude Include="DeepOneIA.h" />
+    <ClInclude Include="DumbIA.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="KCastlingMove.h" />
@@ -148,6 +153,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PromoteMove.h" />
     <ClInclude Include="QCastlingMove.h" />
+    <ClInclude Include="RandomIA.h" />
     <ClInclude Include="ShallowRed.h" />
     <ClInclude Include="Tree.h" />
   </ItemGroup>

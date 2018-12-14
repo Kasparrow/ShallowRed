@@ -72,11 +72,11 @@ void King::compute_out_of_check_cases()
             case 0:
                 if (y_king > y_threat)
                     for (int i = y_threat + 1; i < y_king; i++)
-                        player->add_out_of_check_case(x_king + i);
+                        player->add_out_of_check_case((x_threat * 8) + i);
 
                 else
                     for (int i = y_king + 1; i < y_threat; i++)
-                        player->add_out_of_check_case(x_king + i);
+                        player->add_out_of_check_case((x_king * 8) + i);
                 break;
 
             // - same column

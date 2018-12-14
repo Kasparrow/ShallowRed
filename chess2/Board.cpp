@@ -1,7 +1,12 @@
 #include <iostream>
 
 #include "Board.h"
+
+#include "RandomIA.h"
+#include "DumbIA.h"
+#include "DeepOneIA.h"
 #include "ShallowRed.h"
+
 #include "Defines.h"
 #include "PromoteMove.h"
 
@@ -10,10 +15,8 @@ using namespace std;
 Board::Board ()  
 {
     // - init players
-    _white = new Player(this, 'w');
-    //_white = new ShallowRed(this, 'w');
-    //_black = new Player(this, 'b');
-    _black = new ShallowRed(this, 'b');
+    _white = new DeepOneIA(this, 'w');
+    _black = new RandomIA(this, 'b');
 
     // init history
     _history = new MoveHistory();
@@ -88,7 +91,7 @@ void Board::print ()
 
     cout << "-------------------------------------------------\n";
     
-    if (!DEBUG)
+    if (DEBUG)
     {
         cout << "White is check : ";
         cout << _white->is_check() << endl;

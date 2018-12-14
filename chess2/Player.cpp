@@ -15,12 +15,14 @@ Player::Player()
 {
     _board = nullptr;
     _color = ' ';
+    _name = "Player";
 }
 
 Player::Player(Board *b, char c) 
 {
     _board = b;
     _color = c;
+    _name = "Player";
 }
 
 void Player::add_piece(Piece *p) 
@@ -403,4 +405,31 @@ int Player::count_authorized_moves() const
         total += piece->get_authorized_moves().size();
 
     return total;
+}
+
+double Player::evaluate(Board* b) const
+{
+    auto const white = b->get_white();
+    auto const black = b->get_black();
+
+    auto const white_score = white->get_piece_values() + 0.5 * white->count_authorized_moves() + 0.1 * white->count_threatened_case();
+    auto const black_score = black->get_piece_values() + 0.5 * black->count_authorized_moves() + 0.1 * black->count_threatened_case();
+
+    return white_score - black_score;
+}
+
+std::string Player::get_name()
+{
+    return _name;
+}
+
+int Player::handle_bad_move()
+{
+    std::cout << get_name() << "try to play unauthorized move. Continue ? \n";
+    char debug = getchar();
+
+    if (debug == 'n')
+        return ABANDON;
+    
+    return MOVE;
 }

@@ -297,9 +297,40 @@ void Piece::add_king_moves()
 
             auto current_case = _board->get_case(tmp_line, tmp_col);
 
+            // - check that the destination case is not threatenedby black
             bool is_threatened = get_color() == 'w' ? current_case->is_threatened_by_black() : current_case->is_threatened_by_white();
 
-            if (!is_threatened)
+            // - check that if we're in check, we do not try to go in an
+            // unauthorized direction
+            // exemple : [Q][][][k][]<- not threatened by black, but this is
+            // not a legal move for the king
+            bool is_legal_direction = true;
+
+            if (is_king() && is_owner_check())
+            {
+                auto threats = _board->get_case(_line, _column)->get_threats();
+
+                for (auto threat : threats)
+                {
+                    // - ignore threats from ally pieces
+                    if (threat->get_color() == _color)
+                        continue;
+
+                    int location = threat->get_coordinates();
+                    int dir = direction(tmp_case, location);
+
+                    if (threat->is_queen() && dir != -1)
+                        is_legal_direction = false;
+
+                    else if (threat->is_rook() && (dir == 0 || dir == 1))
+                        is_legal_direction = false;
+
+                    else if (threat->is_bishop() && (dir == 2 || dir == 3))
+                        is_legal_direction = false;
+                }
+            }
+
+            if (!is_threatened && is_legal_direction)
                 check_and_add_authorized_move(tmp_line, tmp_col, tmp_case);
         }
     }

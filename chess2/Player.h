@@ -3,6 +3,7 @@
 
 #include <list>
 #include <vector>
+#include <string>
 
 #include "Piece.h"
 
@@ -45,12 +46,17 @@ class Player
         int                     get_piece_values                    () const;
         int                     count_threatened_case               () const;
         int                     count_authorized_moves              () const;
+        double                  evaluate                            (Board* b) const;
+        virtual std::string     get_name                            ();
+        int                     handle_bad_move                     ();
 
     protected:
         std::list<Piece*>       _pieces;
         std::vector<int>        _out_of_check_cases;
         Board*                  _board;
         char                    _color;
+        std::string             _name;
+
 };
 
 #endif
