@@ -14,21 +14,35 @@ ShallowRed::ShallowRed(Board *b, char c) : Player(b, c)
 
 double ShallowRed::alpha_beta(Board* b, double alpha, double beta, bool is_min_node, int depth, int& ret_x_start, int& ret_y_start, int& ret_x_end, int& ret_y_end)
 {
-    auto pieces = get_list_pieces();
+    auto player = is_min_node ? b->get_black() : b->get_white();
+    auto color = player->get_color();
+    auto pieces = player->get_list_pieces();
+
+    if (depth == ALPHA_BETA_DEPTH)
+        std::cout << color << std::endl;
 
     // - leaf node
     if (depth == 0)
         return evaluate(b);
+
+    // mat and pats are also leaf node
+    if (b->get_white()->is_check_mat())
+        return -1000.0;
+
+    if (b->get_black()->is_check_mat())
+        return 1000.0;
 
     int y_start;
     int x_start;
     int y_end;
     int x_end;
 
-    double v = INFINITY;
+    double v;
 
     if (is_min_node)
     {
+        v = INFINITY;
+
         for (auto piece : pieces)
         {
             auto moves = piece->get_authorized_moves();
@@ -46,37 +60,34 @@ double ShallowRed::alpha_beta(Board* b, double alpha, double beta, bool is_min_n
                 x_end = move / 8;
 
                 // - update board
-                _board->move(x_start, y_start, x_end, y_end, _color);
+                bool legal = _board->move(x_start, y_start, x_end, y_end, color);
+
+                if (!legal)
+                    return handle_bad_move();
+
                 _board->set_constraints(this);
 
-                v = std::min(v, alpha_beta(b, alpha, beta, !is_min_node, depth - 1, ret_x_start, ret_y_start, ret_x_end, ret_y_end));
+                double move_score = alpha_beta(b, alpha, beta, !is_min_node, depth - 1, ret_x_start, ret_y_start, ret_x_end, ret_y_end);
+
+                if (move_score < v)
+                {
+                    v = move_score;
+
+                    if (depth == ALPHA_BETA_DEPTH)
+                    {
+                        ret_x_start = x_start;
+                        ret_y_start = y_start;
+                        ret_x_end = x_end;
+                        ret_y_end = y_end;
+                    }
+                }
 
                 // - restore board
                 _board->cancel_move();
                 _board->set_constraints(this);
 
                 if (alpha >= v)
-                {
-                    if (depth == ALPHA_BETA_DEPTH)
-                    {
-                        std::cout << "UPDATE\n";
-                        ret_x_start = x_start;
-                        ret_y_start = y_start;
-                        ret_x_end = y_start;
-                        ret_y_end = y_end;
-                    }
-
                     return v;
-                }
-
-                if (v < beta && depth == ALPHA_BETA_DEPTH)
-                {
-                    std::cout << "UPDATE\n";
-                    ret_x_start = x_start;
-                    ret_y_start = y_start;
-                    ret_x_end = y_start;
-                    ret_y_end = y_end;
-                }
 
                 beta = std::min(beta, v);
             }
@@ -104,49 +115,38 @@ double ShallowRed::alpha_beta(Board* b, double alpha, double beta, bool is_min_n
                 x_end = move / 8;
 
                 // - update board
-                _board->move(x_start, y_start, x_end, y_end, _color);
+                bool legal = _board->move(x_start, y_start, x_end, y_end, color);
+
+                if (!legal)
+                    return handle_bad_move();
+
                 _board->set_constraints(this);
 
-                v = std::max(v, alpha_beta(b, alpha, beta, !is_min_node, depth - 1, ret_x_start, ret_y_start, ret_x_end, ret_y_end));
+                double move_score = alpha_beta(b, alpha, beta, !is_min_node, depth - 1, ret_x_start, ret_y_start, ret_x_end, ret_y_end);
+
+                if (move_score > v)
+                {
+                    v = move_score;
+
+                    if (depth == ALPHA_BETA_DEPTH)
+                    {
+                        ret_x_start = x_start;
+                        ret_y_start = y_start;
+                        ret_x_end = x_end;
+                        ret_y_end = y_end;
+                    }
+                }
 
                 // - restore board
                 _board->cancel_move();
                 _board->set_constraints(this);
 
                 if (v >= beta)
-                {
-                    if (depth == ALPHA_BETA_DEPTH)
-                    {
-                        std::cout << "UPDATE\n";
-                        ret_x_start = x_start;
-                        ret_y_start = y_start;
-                        ret_x_end = y_start;
-                        ret_y_end = y_end;
-                    }
-
                     return v;
-                }
-
-                if (depth == ALPHA_BETA_DEPTH && v > alpha)
-                {
-                    std::cout << "UPDATE\n";
-                    ret_x_start = x_start;
-                    ret_y_start = y_start;
-                    ret_x_end = y_start;
-                    ret_y_end = y_end;
-                }
 
                 alpha = std::max(alpha, v);
             }
         }
-    }
-
-    if (depth == ALPHA_BETA_DEPTH)
-    {
-        ret_x_start = x_start;
-        ret_y_start = y_start;
-        ret_x_end = y_start;
-        ret_y_end = y_end;
     }
 
     return v;
@@ -157,9 +157,11 @@ int ShallowRed::play()
 {
     // return the action of the selected AI
     int x_start, y_start, x_end, y_end;
-    double score = alpha_beta(_board, -INFINITY, INFINITY, false, ALPHA_BETA_DEPTH, x_start, y_start, x_end, y_end);
+    // white seeks positive score, black seeks negative score
+    double minimise = _color == 'b';
+    double score = alpha_beta(_board, -INFINITY, INFINITY, minimise, ALPHA_BETA_DEPTH, x_start, y_start, x_end, y_end);
 
-    std::cout << "ALPHABETA SUGGEST : " << case_to_coordinates(x_start, y_start) << " " << case_to_coordinates(x_end, y_end) << std::endl;
+    std::cout << "SHALLOW RED : " << _color << " " << case_to_coordinates(x_start, y_start) << "\n";
 
     bool legal = _board->move(x_start, y_start, x_end, y_end, _color);
 

@@ -15,8 +15,8 @@ using namespace std;
 Board::Board ()  
 {
     // - init players
-    _white = new DeepOneIA(this, 'w');
-    _black = new RandomIA(this, 'b');
+    _white = new Player(this, 'w');
+    _black = new ShallowRed(this, 'b');
 
     // init history
     _history = new MoveHistory();
@@ -91,7 +91,7 @@ void Board::print ()
 
     cout << "-------------------------------------------------\n";
     
-    if (DEBUG)
+    if (!DEBUG)
     {
         cout << "White is check : ";
         cout << _white->is_check() << endl;
@@ -214,6 +214,14 @@ bool Board::move(const int x_start, const int y_start, const int x_end, const in
     // - store move in move history
     const auto m = new Move(x_start, y_start, x_end, y_end, piece_to_move, piece_to_take);
     _history->add_move(m);
+
+    if (piece_to_take && piece_to_take->is_king())
+    {
+        std::cout << "ERROR : TRY TO TAKE KING : LOG \n";
+        _history->print();
+        getchar();
+    }
+
 
     return true;
 }

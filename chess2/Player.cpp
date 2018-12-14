@@ -425,6 +425,7 @@ std::string Player::get_name()
 
 int Player::handle_bad_move()
 {
+    _board->print();
     std::cout << get_name() << "try to play unauthorized move. Continue ? \n";
     char debug = getchar();
 
