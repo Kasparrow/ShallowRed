@@ -330,11 +330,7 @@ bool Player::is_check_mat()
 
     // - king has authorized moves
     if (!king->get_authorized_moves().empty())
-    {
-        king->print_authorized_moves();
-
         return false;
-    }
 
     // - out of checks moves and king is not threatened by more than one piece
     if (king->get_case()->count_color_threats(opponent_color) < 2 && has_out_of_check_moves())

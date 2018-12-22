@@ -18,9 +18,6 @@ double ShallowRed::alpha_beta(Board* b, double alpha, double beta, bool is_min_n
     auto color = player->get_color();
     auto pieces = player->get_list_pieces();
 
-    if (depth == ALPHA_BETA_DEPTH)
-        std::cout << color << std::endl;
-
     // - leaf node
     if (depth == 0)
         return evaluate(b);
@@ -160,8 +157,6 @@ int ShallowRed::play()
     // white seeks positive score, black seeks negative score
     double minimise = _color == 'b';
     double score = alpha_beta(_board, -INFINITY, INFINITY, minimise, ALPHA_BETA_DEPTH, x_start, y_start, x_end, y_end);
-
-    std::cout << "SHALLOW RED : " << _color << " " << case_to_coordinates(x_start, y_start) << "\n";
 
     bool legal = _board->move(x_start, y_start, x_end, y_end, _color);
 

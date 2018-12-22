@@ -33,12 +33,12 @@ void Queen::compute_authorized_moves()
                 add_bottom_line_moves(8);
                 break;
             case 2:
-                add_top_left_diagonal_moves(8);
-                add_bottom_right_diagonal_moves(8);
-                break;
-            case 3:
                 add_top_right_diagonal_moves(8);
                 add_bottom_left_diagonal_moves(8);
+                break;
+            case 3:
+                add_top_left_diagonal_moves(8);
+                add_bottom_right_diagonal_moves(8);
                 break;
             default:
                 break;

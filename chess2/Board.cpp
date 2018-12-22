@@ -88,10 +88,8 @@ void Board::print ()
         cout << " |\n   -------------------------------------------------\n";
     }
     cout << "      a     b     c     d     e     f     g     h   \n\n";
-
-    cout << "-------------------------------------------------\n";
     
-    if (DEBUG)
+    if (!DEBUG)
     {
         cout << "White has moved : ";
         cout << dynamic_cast<King*>(_white->get_king())->has_moved() << endl;
@@ -107,7 +105,6 @@ void Board::print ()
         cout << "Black out of check moves : ";
         _black->print_out_of_check_moves();
     }
-    cout << "-------------------------------------------------\n";
     _history->print();
     cout << "-------------------------------------------------\n";
 

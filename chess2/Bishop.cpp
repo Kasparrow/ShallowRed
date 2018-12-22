@@ -26,12 +26,13 @@ void Bishop::compute_authorized_moves()
         switch (dir)
         {
         case 2:
-            add_top_left_diagonal_moves(8);
-            add_bottom_right_diagonal_moves(8);
-            break;
-        case 3:
             add_top_right_diagonal_moves(8);
             add_bottom_left_diagonal_moves(8);
+            break;
+        case 3:
+            add_top_left_diagonal_moves(8);
+            add_bottom_right_diagonal_moves(8);
+            
             break;
         default:
             break;
