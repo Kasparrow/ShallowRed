@@ -91,12 +91,12 @@ void Board::print ()
 
     cout << "-------------------------------------------------\n";
     
-    if (!DEBUG)
+    if (DEBUG)
     {
-        cout << "White is check : ";
-        cout << _white->is_check() << endl;
-        cout << "\nBlack is check : ";
-        cout << _black->is_check() << endl;
+        cout << "White has moved : ";
+        cout << dynamic_cast<King*>(_white->get_king())->has_moved() << endl;
+        cout << "\nBlack has moved : ";
+        cout << dynamic_cast<King*>(_black->get_king())->has_moved() << endl;
         cout << endl;
         cout << "White authorize moves : ";
         _white->print_all_authorized_moves();
@@ -163,13 +163,21 @@ bool Board::move(const int x_start, const int y_start, const int x_end, const in
 {
     Piece* piece_to_move = nullptr;
     Piece* piece_to_take = nullptr;
+    
 
     // if start case is not occupied error
     if (!get_case(x_start, y_start)->is_occupied())
         return false;
 
-
     piece_to_move = get_case(x_start, y_start)->get_occupant();
+
+    // - get moved flag before moving the piece 
+    bool has_moved = false;
+    if (piece_to_move->is_king())
+        has_moved = dynamic_cast<King*>(piece_to_move)->has_moved();
+
+    else if (piece_to_move->is_rook())
+        has_moved = dynamic_cast<Rook*>(piece_to_move)->has_moved();
 
     // does not work for AI player, auhtorized move should have filtered the out of check moves
     const auto is_not_in_chess = (c == 'w' && get_white()->is_out_of_check_move(piece_to_move, (x_end * 8) + y_end) || c == 'b' && get_black()->is_out_of_check_move(piece_to_move, (x_end * 8) + y_end));
@@ -212,7 +220,10 @@ bool Board::move(const int x_start, const int y_start, const int x_end, const in
     }
 
     // - store move in move history
-    const auto m = new Move(x_start, y_start, x_end, y_end, piece_to_move, piece_to_take);
+    Move* m;
+
+    m = new Move(x_start, y_start, x_end, y_end, piece_to_move, piece_to_take, has_moved);
+
     _history->add_move(m);
 
     if (piece_to_take && piece_to_take->is_king())
@@ -221,7 +232,6 @@ bool Board::move(const int x_start, const int y_start, const int x_end, const in
         _history->print();
         getchar();
     }
-
 
     return true;
 }

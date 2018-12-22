@@ -305,6 +305,7 @@ void Piece::add_king_moves()
             // exemple : [Q][][][k][]<- not threatened by black, but this is
             // not a legal move for the king
             bool is_legal_direction = true;
+            bool is_taking_threat = false;
 
             if (is_king() && is_owner_check())
             {
@@ -327,10 +328,14 @@ void Piece::add_king_moves()
 
                     else if (threat->is_bishop() && (dir == 2 || dir == 3))
                         is_legal_direction = false;
+
+                    is_taking_threat |= current_case->get_occupant() == threat;
                 }
             }
 
-            if (!is_threatened && is_legal_direction)
+            // - special case : can move is non legal direction if we take the threatening piece
+
+            if (!is_threatened && (is_legal_direction || is_taking_threat))
                 check_and_add_authorized_move(tmp_line, tmp_col, tmp_case);
         }
     }

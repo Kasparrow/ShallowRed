@@ -71,4 +71,10 @@ void Move::cancel(Board* b)
         else
             b->get_black()->add_piece(_take);
     }
+
+    if (_current->is_king())
+        dynamic_cast<King*>(_current)->set_moved(_moved_flag);
+
+    else if (_current->is_rook())
+        dynamic_cast<Rook*>(_current)->set_moved(_moved_flag);
 }
