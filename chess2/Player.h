@@ -49,6 +49,7 @@ class Player
         double                  evaluate                            (Board* b) const;
         virtual std::string     get_name                            ();
         int                     handle_bad_move                     ();
+        int                     evaluate_pawn_structure             ();
 
     protected:
         std::list<Piece*>       _pieces;

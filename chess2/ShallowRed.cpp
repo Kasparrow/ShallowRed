@@ -5,7 +5,7 @@
 #include "ShallowRed.h"
 #include "Functions.h"
 
-#define ALPHA_BETA_DEPTH 3
+#define ALPHA_BETA_DEPTH 4
 
 ShallowRed::ShallowRed(Board *b, char c) : Player(b, c)
 {
@@ -64,7 +64,10 @@ double ShallowRed::alpha_beta(Board* b, double alpha, double beta, bool is_min_n
 
                 _board->set_constraints(this);
 
-                double move_score = alpha_beta(b, alpha, beta, !is_min_node, depth - 1, ret_x_start, ret_y_start, ret_x_end, ret_y_end);
+                double move_score = alpha_beta(b, alpha, beta, false, depth - 1, ret_x_start, ret_y_start, ret_x_end, ret_y_end);
+
+                if (depth == ALPHA_BETA_DEPTH)
+                    std::cout << case_to_coordinates(y_start, x_start) << " " << case_to_coordinates(y_end, x_end) << " : " << move_score << std::endl;
 
                 if (move_score < v)
                 {
@@ -83,10 +86,12 @@ double ShallowRed::alpha_beta(Board* b, double alpha, double beta, bool is_min_n
                 _board->cancel_move();
                 _board->set_constraints(this);
 
+                
                 if (alpha >= v)
                     return v;
 
                 beta = std::min(beta, v);
+                
             }
         }
     }
@@ -119,7 +124,10 @@ double ShallowRed::alpha_beta(Board* b, double alpha, double beta, bool is_min_n
 
                 _board->set_constraints(this);
 
-                double move_score = alpha_beta(b, alpha, beta, !is_min_node, depth - 1, ret_x_start, ret_y_start, ret_x_end, ret_y_end);
+                double move_score = alpha_beta(b, alpha, beta, true, depth - 1, ret_x_start, ret_y_start, ret_x_end, ret_y_end);
+
+                if (depth == ALPHA_BETA_DEPTH)
+                    std::cout << case_to_coordinates(y_start, x_start) << " " << case_to_coordinates(y_end, x_end) << " : " << move_score << std::endl;
 
                 if (move_score > v)
                 {
@@ -142,6 +150,7 @@ double ShallowRed::alpha_beta(Board* b, double alpha, double beta, bool is_min_n
                     return v;
 
                 alpha = std::max(alpha, v);
+                
             }
         }
     }

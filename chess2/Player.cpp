@@ -408,8 +408,8 @@ double Player::evaluate(Board* b) const
     auto const white = b->get_white();
     auto const black = b->get_black();
 
-    auto const white_score = white->get_piece_values() + 0.5 * white->count_authorized_moves() + 0.1 * white->count_threatened_case();
-    auto const black_score = black->get_piece_values() + 0.5 * black->count_authorized_moves() + 0.1 * black->count_threatened_case();
+    auto const white_score = 5 * white->get_piece_values() + white->count_authorized_moves() + white->evaluate_pawn_structure();
+    auto const black_score = 5 * black->get_piece_values() + black->count_authorized_moves() + black->evaluate_pawn_structure();
 
     return white_score - black_score;
 }
@@ -429,4 +429,27 @@ int Player::handle_bad_move()
         return ABANDON;
     
     return MOVE;
+}
+
+int Player::evaluate_pawn_structure()
+{
+    // for the moment, this function only evaluate if there is pawn on the same column
+    int col[8];
+    int res = 0;
+
+    for (auto piece : _pieces)
+    {
+        if (!piece->is_pawn())
+            continue;
+
+        int index = piece->get_coordinates() % 8;
+
+        col[index]++;
+    }
+
+    for (int i = 0; i < 8; i++)
+        if (col[i] == 1)
+            res++;
+
+    return res;
 }

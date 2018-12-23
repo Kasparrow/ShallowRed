@@ -39,6 +39,7 @@ class Board
         MoveHistory*                get_history                             () const;
         std::vector<int>            get_out_of_check_moves                  (char player_color) const;
         int                         count_threats                           (char color) const;
+        int                         evaluate_center_control                 ();
 
         Case*                       operator()                              (unsigned line, unsigned column);
 

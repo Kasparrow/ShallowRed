@@ -385,3 +385,8 @@ int Board::count_threats(char color) const
 
     return total;
 }
+
+int Board::evaluate_center_control()
+{
+    return 0;
+}
