@@ -28,7 +28,7 @@ void Pawn::compute_authorized_moves()
 
             switch (dir)
             {
-            case 0:
+            case 1:
                 add_white_pawn_forward_moves();
                 break;
             case 2:
@@ -59,7 +59,7 @@ void Pawn::compute_authorized_moves()
 
             switch (dir)
             {
-            case 0:
+            case 1:
                 add_black_pawn_forward_moves();
                 break;
             case 2:
