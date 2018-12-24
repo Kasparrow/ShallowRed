@@ -25,6 +25,7 @@ class Case
         bool                    is_threatened_by_white      () const;
         std::list<Piece*>       get_threats                 () const;
         int                     count_color_threats         (const char color);
+        int                     evaluate_controle           ();
 
     private:
         int                     _line;

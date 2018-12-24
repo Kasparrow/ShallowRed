@@ -101,3 +101,18 @@ int Case::count_color_threats(const char color)
         return p->get_color() == color;
     });
 }
+
+int Case::evaluate_controle()
+{
+    int res = 0;
+
+    for (auto threat : _threatened_by)
+    {
+        if (threat->get_color() == 'w')
+            res++;
+        else
+            res--;
+    }
+
+    return res;
+}

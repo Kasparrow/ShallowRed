@@ -408,10 +408,10 @@ double Player::evaluate(Board* b) const
     auto const white = b->get_white();
     auto const black = b->get_black();
 
-    auto const white_score = 5 * white->get_piece_values() + white->count_authorized_moves() + white->evaluate_pawn_structure();
-    auto const black_score = 5 * black->get_piece_values() + black->count_authorized_moves() + black->evaluate_pawn_structure();
+    auto const white_score = 5 * white->get_piece_values() + 0.1 * white->count_authorized_moves() + white->evaluate_pawn_structure();
+    auto const black_score = 5 * black->get_piece_values() + 0.1 * black->count_authorized_moves() + black->evaluate_pawn_structure();
 
-    return white_score - black_score;
+    return (white_score - black_score) + b->evaluate_center_control();
 }
 
 std::string Player::get_name()

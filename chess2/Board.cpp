@@ -388,5 +388,12 @@ int Board::count_threats(char color) const
 
 int Board::evaluate_center_control()
 {
-    return 0;
+    int res = 0;
+
+    res += get_case(3, 3)->evaluate_controle();
+    res += get_case(3, 4)->evaluate_controle();
+    res += get_case(4, 3)->evaluate_controle();
+    res += get_case(4, 4)->evaluate_controle();
+
+    return res;
 }
